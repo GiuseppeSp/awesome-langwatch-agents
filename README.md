@@ -49,7 +49,7 @@ Every agent follows this same shape. No framework lock-in, no magic — just `op
 
 ## Background
 
-The agents in this repo grew out of [Nonna's Cookbook](https://github.com/GiuseppeSp/my_App), a production iOS app where I instrumented every step of a 6-stage RAG pipeline with LangWatch and ran a real eval loop against a hand-labeled golden dataset. The lessons from that build — how to actually set up traces, what evaluators catch, where instrumentation pays off — are packaged here as small, focused examples anyone can copy.
+These agents grew out of practical experience instrumenting a 6-stage production RAG pipeline with LangWatch and running a real eval loop against a hand-labeled golden dataset. The lessons from that build — how to actually set up traces, what evaluators catch, where instrumentation pays off — are packaged here as small, focused examples anyone can copy.
 
 ## Author
 

@@ -37,12 +37,41 @@ Three scorers, two cheap and one LLM-judged ([`evals.py`](evals.py)):
 
 ## The tuning experiment
 
-> **Chunk size 128 vs 256 vs 512 — measured impact on retrieval and faithfulness**
->
-> _Baseline (chunk size 256): TBD after first run._
-> _After sweep: TBD._
+> **Chunk size 128 vs 256 vs 512 — measured impact on retrieval, completeness, and faithfulness**
 
-Run all three sizes with one command — the driver script ([`run_eval.py`](run_eval.py)) supports a `--sweep` flag that runs the whole dataset against each chunk size in sequence and prints a comparison table.
+Run all three sizes with one command — `python run_eval.py --sweep` runs the whole 15-row dataset against each chunk size in sequence and prints a comparison table.
+
+### Results
+
+| chunk_size | retrieval_at_k | keyword_match | faithfulness |
+|---|---|---|---|
+| 128 | 0.93 (93%) | 0.61 (40%) | 0.93 (93%) |
+| 256 | 0.93 (93%) | 0.61 (40%) | 0.93 (93%) |
+| 512 | 0.93 (93%) | 0.59 (40%) | 0.93 (93%) |
+
+*(Score is the mean across the dataset; % is the pass rate.)*
+
+### What this actually tells us
+
+The textbook advice on RAG tuning starts with "sweep your chunk size." On this corpus, it moves nothing. Retrieval is at 93% across all three sizes; faithfulness is at 93% across all three sizes; keyword match wobbles by two percentage points.
+
+**That's the finding.** And it's worth more than another "chunk size 256 won" blog post because it's actually true on this data, measured directly.
+
+The reason chunk size is a non-lever here is the shape of the corpus: ten short entries (~150 words each) on distinct topics with little vocabulary overlap. Embedding-based retrieval saturates regardless of how you cut the entries — the right chunk is always findable.
+
+Chunk size becomes a real lever when:
+- The corpus is **much larger** (thousands of docs, vocabulary repeats across many entries)
+- Entries are **long** (whole pages or chapters) so smaller chunks isolate distinct ideas
+- Entries **overlap in terminology** so retrieval has to discriminate between similar passages
+- Synthesis quality starts depending on **the surrounding context** of the matched chunk
+
+The meta-lesson for AI PMs: **test your knobs against your own data before trusting blog-post wisdom**. The whole reason the eval framework exists is to give you that test.
+
+### What would actually improve quality on this dataset?
+
+Looking at where the numbers leave room: `keyword_match` is the laggard at ~40% pass rate. That isn't a retrieval problem — the answers are reaching the right context (93% retrieval) and accurately reflecting it (93% faithfulness). It's that the synthesis paraphrases naturally instead of repeating expected vocabulary. The actual lever to move that would be a synthesis-prompt tweak ("include the original term in your answer"), not chunk size.
+
+That's the next experiment if you wanted to extend this agent: tighten the synthesis prompt, re-run, watch only `keyword_match` shift.
 
 ## Quick start
 
@@ -72,4 +101,4 @@ How to wire LangWatch around the simplest possible RAG so the next time you add 
 
 ## Status
 
-🚧 Code complete. Baseline numbers + LangWatch screenshot landing after the first run.
+✅ Complete. Code, dataset, evaluators, and the chunk-size sweep are all shipped. Traces from a real run live in the author's LangWatch portfolio project alongside production Cookbook RAG work.

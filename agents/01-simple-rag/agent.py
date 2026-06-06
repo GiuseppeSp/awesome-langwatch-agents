@@ -33,10 +33,10 @@ SERVICE_NAME = "simple-rag"
 
 # ---- Setup ----
 
-langwatch.setup(
-    api_key=os.environ["LANGWATCH_API_KEY"],
-    service_name=SERVICE_NAME,
-)
+# Service name is taken from OTEL_SERVICE_NAME if set, otherwise defaults.
+# We set it via env var so it works without depending on a specific setup() signature.
+os.environ.setdefault("OTEL_SERVICE_NAME", SERVICE_NAME)
+langwatch.setup(api_key=os.environ["LANGWATCH_API_KEY"])
 
 client = OpenAI()
 
@@ -117,19 +117,16 @@ def query(
     children record per-step inputs, outputs, and token usage.
     """
     root = langwatch.get_current_trace().root_span
-    root.update(input=question, metadata={"chunk_size": chunk_size, "top_k": top_k})
+    root.update(input=question)
 
     # 1. Re-chunk at the requested size. This is data prep, not an LLM call.
     with langwatch.span(name="chunk_corpus", type="span") as s:
         chunks = rechunk(corpus, chunk_size)
-        s.update(
-            output=f"{len(chunks)} chunks at size {chunk_size}",
-            metadata={"chunk_count": len(chunks)},
-        )
+        s.update(output=f"{len(chunks)} chunks at size {chunk_size}")
 
     # 2. Embed every chunk. This is expensive — in production you'd cache.
     with langwatch.span(name="embed_corpus", type="rag") as s:
-        s.update(input=f"{len(chunks)} chunks", metadata={"model": EMBED_MODEL})
+        s.update(input=f"{len(chunks)} chunks · model={EMBED_MODEL}")
         chunk_texts = [c.text for c in chunks]
         resp = client.embeddings.create(model=EMBED_MODEL, input=chunk_texts)
         chunk_embs = np.array([e.embedding for e in resp.data])
@@ -142,7 +139,7 @@ def query(
 
     # 3. Embed the question.
     with langwatch.span(name="embed_query", type="rag") as s:
-        s.update(input=question, metadata={"model": EMBED_MODEL})
+        s.update(input=question)
         q_resp = client.embeddings.create(model=EMBED_MODEL, input=question)
         q_emb = np.array(q_resp.data[0].embedding)
         s.update(
@@ -164,10 +161,10 @@ def query(
             }
             for i in top_idx
         ]
-        s.update(
-            output=[{"source": r["source"], "score": round(r["score"], 3)} for r in retrieved],
-            metadata={"top_k": top_k, "candidate_count": len(chunks)},
+        retrieved_summary = "; ".join(
+            f"{r['source']} ({r['score']:.3f})" for r in retrieved
         )
+        s.update(output=retrieved_summary)
 
     # 5. Stuff retrieved chunks into the prompt and synthesize.
     context = "\n\n".join(f"[{r['source']}]\n{r['text']}" for r in retrieved)
@@ -179,7 +176,7 @@ def query(
         "Answer:"
     )
     with langwatch.span(name="synthesize", type="llm") as s:
-        s.update(input=question, metadata={"model": SYNTH_MODEL})
+        s.update(input=question)
         completion = client.chat.completions.create(
             model=SYNTH_MODEL,
             messages=[{"role": "user", "content": synth_prompt}],

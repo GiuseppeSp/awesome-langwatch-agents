@@ -99,7 +99,7 @@ def faithfulness(question: str, retrieved: list[dict], answer: str) -> EvalResul
     user = f"Question: {question}\n\nRetrieved context:\n{context}\n\nAnswer: {answer}"
 
     with langwatch.span(name="judge_faithfulness", type="evaluation") as s:
-        s.update(input=question, metadata={"model": JUDGE_MODEL})
+        s.update(input=question)
         completion = _client.chat.completions.create(
             model=JUDGE_MODEL,
             messages=[

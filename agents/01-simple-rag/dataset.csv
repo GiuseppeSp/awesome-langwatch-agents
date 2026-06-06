@@ -1,0 +1,16 @@
+question,expected_source,expected_keywords,difficulty,notes
+What does ReAct stand for?,ReAct,"Reasoning,Acting",easy,Direct definition lookup.
+Which pattern interleaves reasoning with tool calls in a single loop?,ReAct,"thought,tool",medium,Definitional but indirect phrasing.
+What's the difference between Chain-of-Thought and Tree of Thoughts?,Tree of Thoughts,"branches,Chain-of-Thought",medium,Comparative — should retrieve both but ToT is primary.
+What does the prompt 'let's think step by step' have to do with?,Chain-of-Thought,"step,reasoning",medium,The famous phrase that popularized CoT.
+Which agent pattern uses self-criticism to improve its outputs?,Reflexion,"critique,revise",easy,Direct conceptual match.
+What pattern uses a written constitution to shape model behavior?,Constitutional AI,"constitution,principles",easy,Direct definition.
+How does RAG ground language models in external knowledge?,Retrieval-Augmented Generation,"chunks,embedded,retrieved",easy,Foundational definition.
+What's the role of an orchestrator in multi-agent systems?,Multi-Agent Orchestration,"orchestrator,delegate,workers",medium,Definitional but specific concept.
+What's the main weakness of Plan-and-Execute when the world changes mid-task?,Plan-and-Execute,"brittleness,replanning",hard,Specific weakness — tests precise retrieval.
+Why does the quality of tool descriptions matter so much for function calling?,Function Calling,"description,wrong calls",hard,Specific tradeoff that's easy to gloss over.
+What makes a router the largest determinant of UX in production AI?,Agentic Router,"route,wrong,downstream",medium,Specific claim within the router entry.
+Compare the cost profiles of ReAct vs Plan-and-Execute.,Plan-and-Execute,"plan,tokens,ReAct",hard,Comparative — corpus mentions cost in both entries.
+What is RLHF an alternative to?,Constitutional AI,"Reinforcement Learning,Human Feedback,alternatives",medium,Tests retrieval — RLHF is only mentioned inside Constitutional AI entry.
+How is Reflexion different from a single Chain-of-Thought attempt?,Reflexion,"iterations,critique,revised",medium,Comparative.
+What pattern would you use to solve a logic puzzle that needs trying multiple approaches?,Tree of Thoughts,"branches,explore,evaluate",hard,Indirect — asks for a use case, not a definition.

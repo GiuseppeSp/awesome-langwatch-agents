@@ -23,6 +23,10 @@ chunk corpus  →  embed chunks  →  embed query  →  retrieve top-k  →  syn
 
 Every step is a LangWatch span. The trace's root carries the user's question as input and the synthesized answer as output; children carry per-step inputs, outputs, model, and token usage. The result is a complete audit trail of one query — exactly the kind of artifact you'd want in production to debug an "I don't trust this answer" report.
 
+![LangWatch trace tree for one simple-rag query](trace.png)
+
+*One real query, fully instrumented: parent `simple_rag_query` span with five typed children. Synthesis dominates the 3.3s end-to-end latency; everything else is sub-second.*
+
 See [`agent.py`](agent.py) — ~150 lines, no frameworks, raw OpenAI + LangWatch.
 
 ## The evaluators

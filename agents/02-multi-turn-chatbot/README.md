@@ -51,9 +51,51 @@ Run both strategies with one command — `python run_eval.py` runs all 6 convers
 
 ### Results
 
-> _TBD after first run._
->
-> Expected story: window scores collapse on `context_recall` and `must_not_include` because the constraint-stating turn falls off the window. Summary preserves the constraint and stays high.
+| strategy | context_recall | must_include | must_not_include |
+|---|---|---|---|
+| `window` | 0.50 (50%) | 0.50 (50%) | 0.67 (67%) |
+| `summary` | **1.00 (100%)** | **1.00 (100%)** | 0.50 (50%) |
+
+*(Score is the mean across the dataset; % is the pass rate. `context_recall` is an LLM-as-judge 1-5 rubric normalized to 0..1; the others are programmatic.)*
+
+**Summary wins decisively on the metric that actually matters.** `context_recall` doubles from 50% to 100% — meaning the strategy that compresses early turns into a summary preserved the user's stated constraint on every single conversation, while the strategy that drops older turns lost it on half.
+
+### The headline demo: `tokyo-vegan`
+
+The user states "I'm vegan and severely allergic to peanuts" in turn 1, then has 9 turns of unrelated chat (transit, cherry blossoms, tipping), then asks for restaurant recommendations.
+
+- **`window`** recommended seven restaurants including Sushi Dai, Ichiran Ramen, kushikatsu (deep-fried meat skewers), and — the kill shot — *Matsuzakagyu Yakiniku, "high-quality Matsusaka beef."* Beef to a vegan. The constraint was completely lost.
+- **`summary`** opened with *"Here are some vegan-friendly restaurants in Tokyo that cater to your dietary needs and are safe for your peanut allergy"* and recommended seven plant-based spots — T's Tantan, Ain Soph. Journey, Nagi Shokudo, vegan sushi at Sushi Ken. The closing sentence: *"Make sure to communicate your peanut allergy clearly when ordering, as some dishes may have hidden ingredients."*
+
+Same agent code. Same conversation. Same question. Different memory strategy. One produces a recommendation that could actively harm the user; the other produces a recommendation that explicitly addresses both constraints.
+
+### The unexpected finding: a subtle eval-design lesson
+
+Look at `must_not_include` in the table: summary "loses" 50% vs window's 67%. That's counterintuitive — how can the strategy that *correctly remembered the constraint* fail the avoidance check more often than the one that forgot it?
+
+The eval rule is too literal. For `tokyo-vegan`, the forbidden list includes the word "peanut." When `window` forgot the constraint, it recommended sushi and beef — neither of which contains the string "peanut," so it accidentally passes. When `summary` correctly engaged with the constraint, it said things like *"be sure to mention your peanut allergy when ordering"* — and the literal keyword `peanut` triggered the rule, even though it appeared in the context of *warning about* peanuts.
+
+**This is real and worth keeping in the writeup.** Programmatic keyword-avoidance checks penalize strategies that engage with constraints by name. The fix would be either:
+
+- An LLM-as-judge replacement for `must_not_include` that reasons about whether the keyword's *role* in the answer is positive or negative
+- More precise forbidden patterns ("eat peanuts" vs the bare word "peanut")
+
+The broader lesson: **LLM-as-judge (here, `context_recall`) was the most reliable signal in this experiment**. The two programmatic evals agreed with it on the headline result but each had a blind spot. That's the case for spending the extra tokens on a rubric judge for the metric that actually drives decisions.
+
+### Per-conversation breakdown
+
+| Conversation | window recall | summary recall | Notes |
+|---|---|---|---|
+| `tokyo-vegan` | ❌ 0.00 | ✅ 1.00 | The kill demo. Window recommended beef. |
+| `paris-budget-anniversary` | ❌ 0.25 | ✅ 1.00 | Window forgot the 1500 EUR budget. |
+| `bali-back-injury` | ✅ 0.75 | ✅ 1.00 | Window narrowly held on — back injury was mentioned across multiple turns. |
+| `iceland-photography-winter` | ✅ 1.00 | ✅ 1.00 | Both pass — winter context is reinforced in recent turns. |
+| `costa-rica-toddler` | ❌ 0.00 | ✅ 1.00 | Window forgot the toddler. |
+| `portugal-pescetarian` | ✅ 1.00 | ✅ 1.00 | Both pass — pescetarian came up in turn 1 but Lisbon is famously seafood-heavy so the model defaults to fish anyway. |
+
+The pattern is clear: `window` survives when the constraint either (a) recurs in recent turns or (b) aligns with the default tendencies of the model's training data. It fails the moment the constraint is single-stated, far back, and specific.
+
+That's a useful finding by itself — it tells you when you can get away with the cheap strategy and when you need to pay for summarization.
 
 ## Quick start
 
@@ -86,4 +128,4 @@ How to instrument a multi-turn agent in LangWatch so each conversation collapses
 
 ## Status
 
-🚧 Code complete. Baseline numbers + Thread-view screenshot landing after the first run.
+✅ Complete. Code, dataset, evaluators, and the memory-strategy comparison are all shipped. Real run produced a clean 50→100 point lift on `context_recall` for the summary strategy, plus an unexpected finding about the limits of programmatic keyword-avoidance checks.

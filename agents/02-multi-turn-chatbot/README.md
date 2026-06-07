@@ -69,6 +69,10 @@ The user states "I'm vegan and severely allergic to peanuts" in turn 1, then has
 
 Same agent code. Same conversation. Same question. Different memory strategy. One produces a recommendation that could actively harm the user; the other produces a recommendation that explicitly addresses both constraints.
 
+![LangWatch Thread view of the tokyo-vegan summary-strategy run](thread.png)
+
+*The summary-strategy answer as it appears in LangWatch's Thread view. The early-conversation constraints (vegan + peanut allergy) are surfaced front and center in the response, demonstrating that the summary preserved them across the 10 intermediate turns.*
+
 ### The unexpected finding: a subtle eval-design lesson
 
 Look at `must_not_include` in the table: summary "loses" 50% vs window's 67%. That's counterintuitive — how can the strategy that *correctly remembered the constraint* fail the avoidance check more often than the one that forgot it?

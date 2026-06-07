@@ -1,0 +1,130 @@
+[
+  {
+    "id": "tokyo-vegan",
+    "description": "User states vegan + peanut allergy + Tokyo trip in turn 1, asks for restaurant recs 10 turns later.",
+    "setup": [
+      {"role": "user", "content": "Hi! I'm planning a trip to Tokyo this March. Quick heads up — I'm vegan and severely allergic to peanuts."},
+      {"role": "assistant", "content": "Wonderful, Tokyo in March is gorgeous with the early cherry blossoms. I'll keep your dietary needs in mind throughout. How long is the trip and what kind of experience are you after?"},
+      {"role": "user", "content": "Ten days. I want to see the cherry blossoms but also experience the city."},
+      {"role": "assistant", "content": "Ten days gives you plenty of room. The cherry blossom peak usually hits late March; Ueno Park and the Meguro River are classic spots. For city experiences, neighborhoods like Shimokitazawa and Yanaka stand out for atmosphere over tourist crowds."},
+      {"role": "user", "content": "How's the public transit?"},
+      {"role": "assistant", "content": "Tokyo's transit is one of the best in the world. Grab a Suica card on arrival — it works on subways, buses, and most convenience stores. JR Yamanote Line is the easiest loop around the central districts."},
+      {"role": "user", "content": "Do I need to tip anywhere?"},
+      {"role": "assistant", "content": "No tipping in Japan — it's actually considered rude. Service is included everywhere."},
+      {"role": "user", "content": "What about cash vs cards?"},
+      {"role": "assistant", "content": "Carry some cash. Cards are widely accepted in big chains, but smaller restaurants and shrines often still want yen. ATMs at 7-Eleven take foreign cards reliably."}
+    ],
+    "test_question": "What restaurants would you recommend I try?",
+    "expected_constraint": "vegan and avoids peanuts",
+    "must_include_any": ["vegan", "plant-based", "vegetable"],
+    "must_not_include": ["peanut"],
+    "notes": "Cleanest memory test: the constraint was stated 10 turns ago. Window of 4 turns drops it; summary should preserve it."
+  },
+  {
+    "id": "paris-budget-anniversary",
+    "description": "User mentions tight budget AND anniversary trip in turn 1. Asks for hotel rec later. Should suggest budget romantic, not luxury.",
+    "setup": [
+      {"role": "user", "content": "I'm planning a 5-day Paris trip for our 10th anniversary in June. Important: we're on a tight budget, around 1500 EUR total including flights from Italy."},
+      {"role": "assistant", "content": "Congratulations on 10 years! Paris in June is lovely. 1500 EUR for two over five days including flights is doable but tight — let's make it count. Flights from Italy can be 100-200 EUR round trip if you book a few months out."},
+      {"role": "user", "content": "We were thinking Air France."},
+      {"role": "assistant", "content": "Air France is comfortable but Ryanair, Vueling, or ITA Airways often run 60-90 EUR per person from major Italian airports. Worth comparing — that's hundreds of EUR back in your pocket for the trip itself."},
+      {"role": "user", "content": "Good point. What time of year is best in June?"},
+      {"role": "assistant", "content": "Early June is sweet — weather is warm but not yet hot, crowds are smaller than July. Late June starts getting crowded as schools let out."},
+      {"role": "user", "content": "How's the food scene?"},
+      {"role": "assistant", "content": "Phenomenal. Bistros for casual French classics, boulangeries for breakfast, and street markets like Marché des Enfants Rouges for cheap, high-quality lunches."},
+      {"role": "user", "content": "Any neighborhoods to avoid?"},
+      {"role": "assistant", "content": "Most central arrondissements are safe. The 18th around Pigalle gets seedy at night; 19th and 20th are fine by day but quieter at night. Standard travel awareness applies."}
+    ],
+    "test_question": "Where should we stay? Suggest a hotel.",
+    "expected_constraint": "budget-friendly + romantic for anniversary",
+    "must_include_any": ["budget", "affordable", "boutique", "small hotel", "guesthouse", "Airbnb", "under"],
+    "must_not_include": ["Ritz", "luxury", "five-star", "George V"],
+    "notes": "Window drops the budget constraint from turn 1. Summary should remember it."
+  },
+  {
+    "id": "bali-back-injury",
+    "description": "User mentions chronic back injury + planned surf trip to Bali at the start. Later asks for activity recs.",
+    "setup": [
+      {"role": "user", "content": "Going to Bali in October. Heads up: I have a chronic lower back injury from a car accident a few years ago. I can still surf but anything high-impact is risky for me."},
+      {"role": "assistant", "content": "Good to know. Bali in October is just past peak surf season but conditions remain solid, and many breaks are still beginner- and intermediate-friendly. We can absolutely plan around your back."},
+      {"role": "user", "content": "What's the best area to base myself?"},
+      {"role": "assistant", "content": "Canggu is the modern hub — coworking, cafes, and consistent waves. Uluwatu has stronger reef breaks for experienced surfers. Ubud is inland and more about culture/nature. Most people split between two areas."},
+      {"role": "user", "content": "I think Canggu sounds right."},
+      {"role": "assistant", "content": "Solid choice. Echo Beach and Batu Bolong have manageable beach breaks; you'll find lots of mid-level surfers there. Stay near Batu Bolong for the most walkable scene."},
+      {"role": "user", "content": "What about getting around?"},
+      {"role": "assistant", "content": "Most people rent a scooter (very cheap, ~5 EUR/day), but ride-share apps like Gojek and Grab work well in Canggu if scooting isn't your thing."},
+      {"role": "user", "content": "How's the food?"},
+      {"role": "assistant", "content": "Canggu is full of healthy cafes, warungs (local Indonesian eateries) for cheap delicious meals, and decent international options. Try nasi campur for a balanced local plate."}
+    ],
+    "test_question": "What activities would you recommend besides surfing?",
+    "expected_constraint": "no high-impact activities due to back injury",
+    "must_include_any": ["low-impact", "gentle", "yoga", "swim", "spa", "walk", "back", "injury"],
+    "must_not_include": ["ATV", "rock climbing", "skydiving", "downhill mountain bike", "bungee"],
+    "notes": "The back injury fact is in turn 1. Summary should pull it into the activity recommendations."
+  },
+  {
+    "id": "iceland-photography-winter",
+    "description": "Photographer going to Iceland in February, primary goal is northern lights. Asks about car rental near the end.",
+    "setup": [
+      {"role": "user", "content": "I'm a landscape photographer planning an Iceland trip for late February. The main goal is photographing the northern lights, plus icy landscapes."},
+      {"role": "assistant", "content": "Late February is one of the best windows — long enough nights, often clear skies, and the snow cover is at peak. Are you flying into Reykjavik?"},
+      {"role": "user", "content": "Yes, KEF airport. I'll be there 8 days."},
+      {"role": "assistant", "content": "Eight days lets you do the South Coast and a bit of the Snaefellsnes peninsula. For aurora, the further from city lights the better — plan at least 2 nights in the rural south or near Vik."},
+      {"role": "user", "content": "Any photography spots I should prioritize?"},
+      {"role": "assistant", "content": "Jökulsárlón glacier lagoon at night is unreal under aurora. Diamond Beach next to it is iconic. Vestrahorn at Stokksnes for foreground mountains. Kirkjufell in Snaefellsnes is the postcard shot."},
+      {"role": "user", "content": "I'll bring my tripod and a wide-angle lens. Anything else?"},
+      {"role": "assistant", "content": "Extra batteries — they drain fast in cold. Hand warmers help. A remote shutter release. And a microfiber cloth for melting snow on the lens."},
+      {"role": "user", "content": "Got it. How are road conditions?"},
+      {"role": "assistant", "content": "Variable. Main highways are usually plowed but ice and sudden whiteouts happen. Always check road.is before driving and never push through bad weather."}
+    ],
+    "test_question": "What kind of car should I rent?",
+    "expected_constraint": "winter driving in Iceland with photography gear",
+    "must_include_any": ["4WD", "4x4", "AWD", "all-wheel", "SUV", "studded"],
+    "must_not_include": ["compact", "economy", "small car"],
+    "notes": "Recall that the trip is in February (winter, icy roads). Summary should preserve seasonal context."
+  },
+  {
+    "id": "costa-rica-toddler",
+    "description": "User says they're traveling with a 2-year-old in turn 1. Asks for activity recs at the end. Window should miss this.",
+    "setup": [
+      {"role": "user", "content": "We're planning two weeks in Costa Rica in November. Traveling with our two-year-old daughter, so all suggestions need to be family-friendly."},
+      {"role": "assistant", "content": "Lovely choice — Costa Rica is great for families. November is the tail end of the rainy season, so plan around afternoon showers. Two weeks gives you flexibility to see both coasts."},
+      {"role": "user", "content": "Pacific or Caribbean side?"},
+      {"role": "assistant", "content": "Both are great but very different. Pacific (Guanacaste, Manuel Antonio, Uvita) has more infrastructure and easier wildlife viewing. Caribbean (Puerto Viejo, Cahuita) is more laid-back with Afro-Caribbean culture."},
+      {"role": "user", "content": "Let's do Pacific."},
+      {"role": "assistant", "content": "Smart choice for ease. Manuel Antonio National Park has accessible trails and famously easy sloth and monkey spotting."},
+      {"role": "user", "content": "How safe is the wildlife?"},
+      {"role": "assistant", "content": "Generally very safe in marked parks. Stay on trails, don't feed monkeys, and watch for crocodiles near river mouths. Rangers are friendly and informative."},
+      {"role": "user", "content": "What about food?"},
+      {"role": "assistant", "content": "Costa Rican food is mild and approachable — rice, beans, plantains, fresh fish, lots of fresh fruit. Tap water is generally safe in most cities and resorts."},
+      {"role": "user", "content": "Do we need shots?"},
+      {"role": "assistant", "content": "No mandatory vaccines for entry, but standard recommendations like Hep A and updated routine vaccines. Talk to a travel-medicine clinic 6 weeks out."}
+    ],
+    "test_question": "What activities should we definitely do?",
+    "expected_constraint": "family-friendly with a 2-year-old",
+    "must_include_any": ["family", "toddler", "child", "kid", "gentle", "easy", "stroller", "short hike"],
+    "must_not_include": ["zip-lining", "white water rafting", "advanced", "strenuous", "challenging hike", "rappelling"],
+    "notes": "Toddler is mentioned in turn 1. Window of 4 would lose this completely. Summary should preserve."
+  },
+  {
+    "id": "portugal-pescetarian",
+    "description": "User says pescetarian + Lisbon in turn 1. Asks for restaurant recs at the end. Should suggest seafood, avoid steak.",
+    "setup": [
+      {"role": "user", "content": "Planning a week in Lisbon in May. Quick note: I'm pescetarian — I eat fish but no other meat."},
+      {"role": "assistant", "content": "You picked the right city. Lisbon's seafood scene is one of the best in Europe and pescetarian-friendly options are everywhere. May weather is also ideal — warm but not yet crowded."},
+      {"role": "user", "content": "Where should I stay?"},
+      {"role": "assistant", "content": "Alfama for atmosphere and walking distance to the historic core. Príncipe Real if you want a quieter, more design-y feel. Avoid Bairro Alto if noise bothers you — it's the party district."},
+      {"role": "user", "content": "Alfama sounds great. How about transportation?"},
+      {"role": "assistant", "content": "Walking covers most of central Lisbon, though the hills are no joke. The 28 tram is iconic but also packed with tourists. The metro is fast and clean for longer distances."},
+      {"role": "user", "content": "Any day trips worth doing?"},
+      {"role": "assistant", "content": "Sintra is non-negotiable — UNESCO-listed palaces in misty hills. Cascais for beach. Évora for a wine-and-historic-architecture combo if you can spare a day."},
+      {"role": "user", "content": "How's the language barrier?"},
+      {"role": "assistant", "content": "Minimal in tourist areas. English is widely spoken in restaurants, hotels, and shops. Learning 'obrigado/a' (thank you) goes a long way."}
+    ],
+    "test_question": "Where should I eat?",
+    "expected_constraint": "pescetarian — fish OK, no other meat",
+    "must_include_any": ["fish", "seafood", "pescatarian", "pescetarian", "bacalhau", "sardine", "marisco"],
+    "must_not_include": ["steak", "bifana", "leitão", "presunto", "chouriço", "beef"],
+    "notes": "Pescetarian constraint stated at turn 1 — exactly the kind of fact the window strategy loses."
+  }
+]

@@ -13,7 +13,7 @@ Building an AI agent is easy. Knowing whether your agent is actually working —
 | # | Agent | Pattern | Status |
 |---|---|---|---|
 | 1 | [simple-rag](agents/01-simple-rag/) | Retrieve-then-generate over a small corpus | ✅ Shipped — chunk-size sweep ran, finding is a null result (and the README explains why that's the interesting answer) |
-| 2 | [multi-turn-chatbot](agents/02-multi-turn-chatbot/) | Conversation memory (window vs summary) | ⏳ Planned |
+| 2 | [multi-turn-chatbot](agents/02-multi-turn-chatbot/) | Conversation memory (window vs summary) | 🚧 Code shipped — baseline run pending |
 | 3 | [tool-use-agent](agents/03-tool-use-agent/) | Function calling with multiple tools | ⏳ Planned |
 | 4 | [agentic-router](agents/04-agentic-router/) | LLM-as-router across knowledge sources | ⏳ Planned |
 | 5 | [multi-agent-pipeline](agents/05-multi-agent-pipeline/) | Orchestrator + specialized workers | ⏳ Planned |

@@ -54,9 +54,54 @@ Run both modes with one command — `python run_eval.py` runs the dataset with e
 
 ### Results
 
-> _TBD after first run._
+| mode | tool_selection | argument_extraction | no_tool_correctness |
+|---|---|---|---|
+| `vague` | 0.95 (95%) | 0.94 (100%) | 1.00 (100%) |
+| `precise` | 0.95 (95%) | 0.94 (100%) | 1.00 (100%) |
+
+*(Score is mean across the dataset; % is the pass rate.)*
+
+**Identical scores.** Same model (gpt-4o-mini), same 20 queries, same accuracy. The textbook advice — *"rewriting your tool description fixes 30-40% of wrong calls"* — moved nothing here.
+
+### Per-row: 19/20 rows resolved identically
+
+Out of 20 dataset rows, only ONE produced a different outcome between the two modes:
+
+> **"How many minutes are in 2.5 hours?"** [expected: `unit_converter`]
 >
-> Expected story: vague mode confuses calculator with unit_converter on time questions ("how many minutes in 2.5 hours"), uses currency_converter for non-monetary unit questions, and over-triggers on general-knowledge queries. Precise mode resolves most of this — same model, just better descriptions.
+> - **vague mode** picked `none` — the model defaulted to chain-of-thought reasoning when descriptions were unclear ("multiply hours by 60... 150 minutes")
+> - **precise mode** picked `calculator` — the model committed to a tool, chose the wrong one by our strict label but produced the correct answer (`2.5 * 60 → 150`)
+>
+> Our label says `unit_converter` is canonical. Neither mode picked it. Both delivered the right end-user answer.
+
+The other 19 rows: identical tool choices in both modes. Both correctly skipped tools on all 5 general-knowledge questions ("Capital of France?", "Who wrote Hamlet?"). Both chose the right tool for all 14 clear-cut queries.
+
+### Why the textbook advice didn't help here — and when it would
+
+Three things made tool-description quality a non-lever in this experiment:
+
+1. **The tools are very distinct.** Calculator, dates, units, currency don't semantically overlap. The model's defaults handle the clear cases just fine.
+2. **The model is strong.** gpt-4o-mini has good built-in tool-routing intuition. The same experiment on gpt-3.5-turbo or a smaller open-source model would almost certainly show a much bigger gap.
+3. **The query distribution skewed clear.** Only 1 of 20 rows was genuinely borderline. To stress-test description quality, you'd want 5-10 ambiguous rows where multiple tools could plausibly apply.
+
+Description quality becomes a real lever when you have:
+- **Tools that overlap semantically** (e.g., three different "search" tools — web, internal docs, knowledge base)
+- **A weaker model** that doesn't have strong defaults
+- **Many borderline queries** where the right tool isn't obvious from the query alone
+- **Tool names that don't match what the tool actually does** (legacy naming, abbreviations)
+
+### The interesting failure-mode divergence
+
+Even though the aggregate is null, the one divergent row revealed a **subtle pattern worth knowing**:
+
+- **Vague descriptions cause under-triggering.** When the model isn't sure which tool to use, it hedges by skipping tools entirely and answering from its own knowledge. Cheaper, but the agent provides no audit trail and no guaranteed-correct math.
+- **Precise descriptions cause confident-but-sometimes-wrong commits.** The model commits to a tool even when the choice is borderline. May pick a functionally-correct alternative, but loses the "your tool wasn't called when it should have been" signal.
+
+In a production setting, you'd care which failure mode you're optimizing against. If the cost of a wrong tool call is high (e.g., it actually executes something expensive), vague + under-triggering may be safer. If the cost of an un-audited chat answer is high (e.g., compliance, citation requirements), precise + always-commits is safer.
+
+### The meta-lesson
+
+**Before investing engineering hours in tool-description rewrites, measure whether your model + tool space actually has the failure mode you're trying to fix.** If your tools are distinct and your model is capable, the textbook advice may be misapplied. This is exactly what the eval framework exists to tell you.
 
 ## Quick start
 
@@ -89,4 +134,4 @@ How to wire OpenAI function calling with LangWatch tracing so every tool call sh
 
 ## Status
 
-🚧 Code complete. Baseline numbers + LangWatch trace screenshot landing after the first run.
+✅ Complete. Code, dataset, evaluators, and the vague-vs-precise comparison are all shipped. Aggregate result is a null — modern models with distinct tools don't need description tuning the way conventional advice suggests — with a useful divergence on the single borderline row that reveals two distinct failure modes (under-triggering vs confident-wrong-commit).

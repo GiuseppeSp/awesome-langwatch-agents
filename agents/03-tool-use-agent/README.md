@@ -34,6 +34,10 @@ model_turn  →  [tool call(s) if requested]  →  model_turn  →  …  →  fi
 
 Standard OpenAI tool-use loop, capped at 5 turns. Every model turn is one LangWatch `llm` span; every executed tool call is a `tool` span with the args and result captured inline. The trace tree for a query that needed two tools will show: root → model_turn → tool → model_turn → final answer.
 
+![LangWatch trace tree for one tool-using query](trace.png)
+
+*One real query, fully instrumented: the root `tool_use_agent` span with two `model_turn` LLM spans bracketing a `tool:calculator` execution. This is the "how many minutes are in 2.5 hours?" borderline case — precise mode picked calculator instead of unit_converter, both produce 150.*
+
 See [`agent.py`](agent.py) — ~150 lines, no frameworks.
 
 ## The evaluators

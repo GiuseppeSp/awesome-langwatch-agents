@@ -44,6 +44,18 @@ classify  →  parse output
 
 Two steps — one LangWatch span for the LLM call, plus a thin parser that's tolerant of "I think the answer is..." rambling (it grabs the last valid category name). The trace tree is intentionally simple: the interesting work is all in the prompt, not the orchestration.
 
+### One real trace per category
+
+Five real traces from a single run, one per category, captured directly from LangWatch. The structure is identical across all five (`agentic_router` workflow span with a `classify` LLM child); what changes is which category the router commits to.
+
+| Category | Trace |
+|---|---|
+| `math_calculation` | ![](trace-math.png) |
+| `code_question` | ![](trace-code.png) |
+| `creative_task` | ![](trace-creative.png) |
+| `factual_question` | ![](trace-factual.png) |
+| `general_chat` | ![](trace-chat.png) |
+
 See [`agent.py`](agent.py) — ~150 lines.
 
 ## The evaluators

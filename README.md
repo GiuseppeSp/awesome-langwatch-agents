@@ -15,7 +15,7 @@ Building an AI agent is easy. Knowing whether your agent is actually working —
 | 1 | [simple-rag](agents/01-simple-rag/) | Retrieve-then-generate over a small corpus | ✅ Shipped — chunk-size sweep ran, finding is a null result (and the README explains why that's the interesting answer) |
 | 2 | [multi-turn-chatbot](agents/02-multi-turn-chatbot/) | Conversation memory (window vs summary) | ✅ Shipped — summary doubled context recall (50→100%) and surfaced a subtle eval-design pitfall |
 | 3 | [tool-use-agent](agents/03-tool-use-agent/) | Function calling with multiple tools | ✅ Shipped — another null aggregate, with a sharp finding about *when* tool-description tuning actually matters |
-| 4 | [agentic-router](agents/04-agentic-router/) | LLM-as-router with 5-way classification | 🚧 Code shipped — baseline run pending |
+| 4 | [agentic-router](agents/04-agentic-router/) | LLM-as-router with 5-way classification | ✅ Shipped — tuned prompt +30 points on ambiguous rows; all wins from one specific named failure mode |
 | 5 | [multi-agent-pipeline](agents/05-multi-agent-pipeline/) | Orchestrator + specialized workers | ⏳ Planned |
 
 Each folder contains:

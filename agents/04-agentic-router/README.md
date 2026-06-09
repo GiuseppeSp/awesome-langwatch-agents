@@ -66,9 +66,54 @@ The driver script ([`run_eval.py`](run_eval.py)) splits the comparison three way
 
 ### Results
 
-> _TBD after first run._
->
-> Expected story: clear rows are at ceiling for both styles (gpt-4o-mini gets the easy ones). The action is on ambiguous rows. Tuned should lift `route_correctness` 20-30 points there (the disambiguation rules give the model explicit guidance) AND maintain `output_format` near 100% (the bare prompt sometimes rambles).
+**ALL rows (25)**
+
+| style | route_correctness | output_format | ambiguity_handling |
+|---|---|---|---|
+| `bare` | 0.88 (88%) | 1.00 (100%) | 0.96 (100%) |
+| `tuned` | **1.00 (100%)** | 1.00 (100%) | 0.99 (100%) |
+
+**CLEAR rows only (15)**
+
+| style | route_correctness |
+|---|---|
+| `bare` | 1.00 (100%) |
+| `tuned` | 1.00 (100%) |
+
+*Both styles at ceiling. gpt-4o-mini handles the clear cases regardless of prompt — no room for the tuned prompt to add anything.*
+
+**AMBIGUOUS rows only (10)**
+
+| style | route_correctness | ambiguity_handling (judge) |
+|---|---|---|
+| `bare` | 0.70 (70%) | 0.90 |
+| `tuned` | **1.00 (100%)** | **0.97** |
+
+***This is where the prompt earns its keep — +30 percentage points on route correctness, and the LLM-judge score on ambiguity rises too.***
+
+### Every win came from the same failure mode
+
+Three rows flipped from incorrect to correct between styles. All three involved the *same* hidden pattern: a query whose surface phrasing suggests one category but whose actual deliverable is a generation task.
+
+| Query | bare picked | tuned picked | What's hidden |
+|---|---|---|---|
+| *"What's 2+2 and write it as a haiku?"* | `math_calculation` | `creative_task` | Generation behind math |
+| *"What's a good name for my dog?"* | `general_chat` | `creative_task` | Generation behind opinion-seeking |
+| *"Who won the 2022 World Cup and write me a celebration tweet for them?"* | `factual_question` | `creative_task` | Generation behind factual lookup |
+
+In every case the user's *actual* need is the generated artifact (haiku, dog name, tweet). The bare prompt's category descriptions weren't specific enough for the model to see past the surface phrasing. The tuned prompt's first disambiguation rule named the pattern explicitly:
+
+> *"If a query has both a factual lookup AND a generation/writing component, the **generation** is the deliverable — pick `creative_task`."*
+
+That single rule caught all three failures.
+
+### The lesson
+
+This is the textbook prompt-engineering result everyone *expects* when they add few-shot examples and disambiguation rules — but it's not automatic. The bare prompt was already correct on 88% of rows; the tuned prompt's lift came **entirely from one specific failure mode that the disambiguation rule names directly**.
+
+The deeper lesson for AI PMs: **prompt engineering works when the prompt change names a specific failure pattern that's actually present in your data.** Adding generic "be careful" instructions or generic few-shot examples isn't what moves the needle. Looking at your eval results, identifying the *one* recurring failure mode, and writing a rule that addresses *that* mode — that's the move.
+
+If we hadn't built a dataset that included ambiguous rows specifically designed to surface generation-hidden-in-another-intent queries, the lift wouldn't have been measurable. The eval framework and the prompt edit are the same intellectual act.
 
 ## Quick start
 
@@ -101,4 +146,4 @@ How to build an LLM-as-router with full LangWatch tracing on every classificatio
 
 ## Status
 
-🚧 Code complete. Baseline numbers + LangWatch trace screenshot landing after the first run.
+✅ Complete. Tuned prompt lifted ambiguous-row accuracy from 70% to 100% — the first cleanly positive result in this catalog after three null-or-mixed findings. All three wins came from a single specific failure mode that the disambiguation rule names directly. The eval framework's job is to surface that.

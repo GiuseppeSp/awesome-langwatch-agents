@@ -1,0 +1,49 @@
+{
+  "categories": [
+    {
+      "name": "code_question",
+      "short_description": "Questions about programming, debugging, or how to write code.",
+      "examples": [
+        "How do I reverse a string in Python?",
+        "Why does this React component re-render on every keystroke?",
+        "Write me a function to flatten a nested list."
+      ]
+    },
+    {
+      "name": "factual_question",
+      "short_description": "Lookup-style questions about real-world facts, history, science, or definitions.",
+      "examples": [
+        "What's the population of Tokyo?",
+        "When did the Berlin Wall fall?",
+        "What does GDP stand for?"
+      ]
+    },
+    {
+      "name": "creative_task",
+      "short_description": "Requests to produce original written content — stories, poems, brainstorming, marketing copy.",
+      "examples": [
+        "Write a haiku about autumn.",
+        "Brainstorm five tagline options for an electric scooter startup.",
+        "Draft a short toast for my sister's wedding."
+      ]
+    },
+    {
+      "name": "math_calculation",
+      "short_description": "Numerical computation, conversions, or word problems where the user needs a specific number back.",
+      "examples": [
+        "What's 15% of 240?",
+        "If I save 200 EUR a month at 4% APR, what do I have in 5 years?",
+        "Convert 60 mph to km/h."
+      ]
+    },
+    {
+      "name": "general_chat",
+      "short_description": "Greetings, small talk, opinions, or anything that doesn't fit the four buckets above. The catch-all.",
+      "examples": [
+        "Hey, how's it going?",
+        "What's your favorite color?",
+        "Tell me a joke."
+      ]
+    }
+  ]
+}

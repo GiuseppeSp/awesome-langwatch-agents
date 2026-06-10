@@ -32,3 +32,4 @@ Thumbs.db
 # Local data + LangWatch runs
 local_data/
 trace_dumps/
+run-log.txt

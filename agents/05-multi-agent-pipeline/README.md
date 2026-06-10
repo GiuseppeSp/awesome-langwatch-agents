@@ -55,7 +55,51 @@ The driver ([`run_eval.py`](run_eval.py)) runs every row twice — once basic, o
 
 ### Results
 
-🚧 _Pending — baseline run not yet executed. Update once the run is complete._
+**Aggregate across 15 rows**
+
+| mode | fact_coverage | hallucination_judge | answer_quality |
+|---|---|---|---|
+| `basic` | 0.87 (73%) | 0.98 (100%) | 1.00 (100%) |
+| `fact_checked` | 0.86 (73%) | 0.98 (100%) | 1.00 (100%) |
+
+(score is mean; % is pass rate)
+
+The two modes are statistically identical. More importantly:
+
+> **The fact-checker fired zero revisions across all 15 rows.**
+
+Every single time, it replied `OK` and let the writer's first draft stand. The `fact_checked` mode burned ~33% more LLM calls and didn't change a single answer.
+
+### Why the fact-checker had nothing to catch
+
+Look at the five rows with low `fact_coverage`:
+
+| Question | fact_coverage | hallucination_judge |
+|---|---|---|
+| ISS — what is it, first crew arrival | 0.50 | 1.00 |
+| Chernobyl — when, what cause | 0.67 | 1.00 |
+| Hubble — when launched, what replaced it | 0.67 | 1.00 |
+| Penicillin — when, by whom | 0.67 | 1.00 |
+| Berlin Wall — when, why | 0.75 | 1.00 |
+
+None of these are hallucinations — the `hallucination_judge` says every answer is fully supported. They're **omissions at the planner stage**: the planner pulled 5 of 6 expected facts and skipped one. The writer then faithfully rendered the planner's (incomplete) fact list.
+
+To the fact-checker, the writer's prose looks perfect: every claim *is* supported by the planner's facts. The checker can't flag the missing fact because it isn't told what was supposed to be there in the first place. The dataset's labeled facts only exist in the evaluation layer — not inside the pipeline.
+
+### The lesson
+
+> **A verification worker can only catch problems within its scope. Upstream omissions are invisible to it.**
+
+The fact-checker was set up to compare writer output against the planner's fact list. That catches one specific failure mode: the writer inventing claims beyond what the planner provided. But on factual Q&A with a competent base model, the writer simply doesn't do that — the failure mode the fact-checker is designed to catch barely exists.
+
+The actual failure mode in this pipeline is **planner incompleteness**. To catch it, you'd need either:
+
+- A verification worker that has access to the *ground-truth fact list*, not the planner's. But then it's not really a worker — it's an evaluator, and it belongs in `evals.py`, not in the pipeline.
+- A planner-quality check that asks "did you exhaustively list the facts a good answer needs?" before the writer ever runs. That's a planner-on-planner critic — and a real intervention to test next, not a fact-checker.
+
+This is the multi-agent design trap most teams walk into the first time: adding more workers *feels* like adding more reliability, but each new worker only catches errors **within its declared scope**. If your real failure mode lives upstream of every verification step, the pipeline silently delivers worse answers with more spans, more tokens, and more invoices.
+
+The thing that made this visible is the per-worker LangWatch trace tree. Without it, the fact_checked-mode failures look identical to the basic-mode failures: the `fact_coverage` numbers move 0.01 and there's no obvious culprit. With it, the fact-checker's verdict on every row (`OK`, `OK`, `OK`...) is right there in the span output — the failure of the fact-checker to *do* anything is its own observable signal.
 
 ## Quick start
 
@@ -92,4 +136,4 @@ How LangWatch's nested span tree turns "the multi-agent pipeline got the wrong a
 
 ## Status
 
-🚧 Code shipped — baseline run pending. Once the baseline lands, this section will get the same honest-finding framing as the rest of the catalog: whether the fact-checker measurably reduces hallucinations + omissions, or whether the basic pipeline was already at ceiling on this dataset.
+✅ Complete. The fact-checker fired zero revisions across 15 rows; both modes ended at fact_coverage 0.87 vs 0.86. The interesting finding isn't the aggregate (~null) — it's that the dataset's real failure mode (planner incompleteness) lives entirely upstream of the fact-checker's scope. This is the second null aggregate in the catalog that produces a sharper PM lesson than a positive result would have: a verification worker only catches errors within its declared scope, and "adding more workers" is not a free reliability upgrade.

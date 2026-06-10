@@ -27,6 +27,16 @@ fact_checked mode:
 
 Each worker is one LLM call wrapped in a typed `langwatch.span`. The orchestrator (`run`) is decorated with `@langwatch.trace(name="multi_agent_pipeline")` so the workflow root span ties everything together.
 
+### Two real traces from LangWatch
+
+**The pipeline itself** — the `multi_agent_pipeline` workflow span with the `planner` (agent, 2.8s) and `writer` (agent, 2.0s) children, plus the workflow's full input/output on the right pane. Apollo 11 query, basic mode.
+
+![](trace-pipeline.png)
+
+**The pipeline + the LLM-as-judge evaluators in the same trace tree** — `judge_hallucination` (evaluation, 914ms) and `judge_quality` (evaluation) sit as siblings of the pipeline workflow. Read the right pane: the judge's raw output is right there — `"5: No hallucinations. Every specific claim aligns with the labeled facts."` That's the empirical signal the writeup hinges on. The writer barely hallucinates → the fact-checker has nothing to flag → adding the fact-checker is pure overhead.
+
+![](trace-with-evals.png)
+
 See [`agent.py`](agent.py) — ~150 lines, raw OpenAI + LangWatch, no framework.
 
 ## The dataset

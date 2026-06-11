@@ -1,0 +1,39 @@
+{
+  "facts": [
+    {"id": "eiffel_tower_completed", "text": "The Eiffel Tower in Paris was completed in 1889 for the World's Fair."},
+    {"id": "statue_of_liberty_dedicated", "text": "The Statue of Liberty was dedicated on October 28, 1886, a gift from France to the United States."},
+    {"id": "great_wall_construction", "text": "Major construction of the Great Wall of China happened under the Ming Dynasty, primarily between 1368 and 1644."},
+    {"id": "taj_mahal_completed", "text": "The Taj Mahal in Agra, India was completed in 1653 under the Mughal emperor Shah Jahan."},
+    {"id": "sydney_opera_house_opened", "text": "The Sydney Opera House opened on October 20, 1973."},
+
+    {"id": "darwin_born", "text": "Charles Darwin, the English naturalist, was born on February 12, 1809."},
+    {"id": "einstein_born", "text": "Albert Einstein, the physicist who developed relativity, was born on March 14, 1879."},
+    {"id": "marie_curie_born", "text": "Marie Curie, the Polish-French physicist and chemist, was born on November 7, 1867."},
+    {"id": "ada_lovelace_born", "text": "Ada Lovelace, often called the first computer programmer, was born on December 10, 1815."},
+    {"id": "newton_born", "text": "Isaac Newton, the English mathematician and physicist, was born on January 4, 1643."},
+    {"id": "shakespeare_born", "text": "William Shakespeare, the English playwright, was born on April 23, 1564 in Stratford-upon-Avon."},
+    {"id": "tesla_born", "text": "Nikola Tesla, the Serbian-American inventor, was born on July 10, 1856."},
+
+    {"id": "moon_landing", "text": "Apollo 11 landed on the moon on July 20, 1969, with Neil Armstrong and Buzz Aldrin walking on the surface."},
+    {"id": "berlin_wall_fell", "text": "The Berlin Wall fell on November 9, 1989."},
+    {"id": "sputnik_launched", "text": "Sputnik 1, the first artificial satellite, was launched by the Soviet Union on October 4, 1957."},
+    {"id": "wright_brothers_first_flight", "text": "The Wright brothers made the first powered flight on December 17, 1903 at Kitty Hawk, North Carolina."},
+    {"id": "world_war_one_end", "text": "World War I ended on November 11, 1918 with the Armistice."},
+    {"id": "world_war_two_end_europe", "text": "World War II in Europe ended on May 8, 1945, known as V-E Day."},
+
+    {"id": "everest_height", "text": "Mount Everest is the highest mountain on Earth, with a peak at 8,849 meters (29,032 feet) above sea level."},
+    {"id": "kilimanjaro_height", "text": "Mount Kilimanjaro in Tanzania is 5,895 meters (19,341 feet) high, the highest peak in Africa."},
+    {"id": "nile_length", "text": "The Nile River is approximately 6,650 kilometers long, traditionally considered the longest river in the world."},
+    {"id": "amazon_length", "text": "The Amazon River in South America is approximately 6,400 kilometers long."},
+
+    {"id": "tokyo_population", "text": "Tokyo, the capital of Japan, has a metropolitan area population of approximately 37 million people, the largest in the world."},
+    {"id": "delhi_population", "text": "Delhi, the capital region of India, has a metropolitan area population of approximately 32 million people."},
+    {"id": "speed_of_light", "text": "The speed of light in a vacuum is 299,792,458 meters per second, or approximately 300,000 kilometers per second."},
+    {"id": "earth_circumference", "text": "The circumference of the Earth at the equator is approximately 40,075 kilometers."},
+
+    {"id": "shakespeare_hamlet", "text": "William Shakespeare wrote Hamlet around 1600-1601."},
+    {"id": "darwin_origin_of_species", "text": "Charles Darwin published On the Origin of Species on November 24, 1859."},
+    {"id": "einstein_relativity_paper", "text": "Albert Einstein published his special theory of relativity in 1905, during his 'miracle year' (annus mirabilis)."},
+    {"id": "newton_principia", "text": "Isaac Newton published his Principia Mathematica in 1687."}
+  ]
+}

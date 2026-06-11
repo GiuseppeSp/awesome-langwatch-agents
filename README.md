@@ -17,6 +17,7 @@ Building an AI agent is easy. Knowing whether your agent is actually working —
 | 3 | [tool-use-agent](agents/03-tool-use-agent/) | Function calling with multiple tools | ✅ Shipped — another null aggregate, with a sharp finding about *when* tool-description tuning actually matters |
 | 4 | [agentic-router](agents/04-agentic-router/) | LLM-as-router with 5-way classification | ✅ Shipped — tuned prompt +30 points on ambiguous rows; all wins from one specific named failure mode |
 | 5 | [multi-agent-pipeline](agents/05-multi-agent-pipeline/) | Planner → writer → optional fact-checker (with revision) | ✅ Shipped — fact-checker fired 0/15 revisions; real failures lived upstream in the planner, invisible to the verifier's scope |
+| 6 | [react-agent](agents/06-react-agent/) | ReAct loop (Thought → Action → Observation) over a multi-hop tool dataset | 🚧 Code shipped — baseline run pending |
 
 Each folder contains:
 - `README.md` — pattern walkthrough, what it does, what the tuning experiment showed

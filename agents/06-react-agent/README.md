@@ -71,7 +71,52 @@ The driver ([`run_eval.py`](run_eval.py)) runs every row twice — once bare, on
 
 ### Results
 
-🚧 _Pending — baseline run not yet executed. Update once the run is complete._
+**Aggregate across 15 multi-hop rows**
+
+| mode | answer_correctness | tool_call_efficiency | reasoning_quality |
+|---|---|---|---|
+| `bare` | **1.00 (100%)** | **0.97 (100%)** | n/a |
+| `react` | **1.00 (100%)** | 0.87 (80%) | 0.70 (67%) |
+
+Both modes got every question right. But on `tool_call_efficiency`, **react is 10 percentage points worse than bare** — the opposite of what the textbook ReAct paper predicts.
+
+### Why react is worse: it bypasses tools MORE
+
+Three rows where react skipped verification steps that bare ran:
+
+| Question | bare tools | react tools | What happened |
+|---|---|---|---|
+| How old would Einstein be today, in 2026? | `search, calculator` | `calculator` only | Model hardcoded 1879 + 2026 from training data |
+| Years between Sputnik and Apollo 11? | `search, search, calculator` | `calculator` only | Model just computed 1969 - 1957 directly |
+| Years between WWI end and WWII end in Europe? | `search, search, calculator` | `calculator` only | Same — bypassed both searches |
+
+In all three cases, react mode emitted a `Thought:` line that explicitly justified skipping the search: *"I know that Sputnik launched in 1957 and Apollo 11 landed in 1969, so I'll just calculate the difference."* That's the externalized reasoning **giving the model rhetorical cover to act on training-data knowledge instead of verifying via the tool**. Bare mode — no scratchpad — followed the tool protocol more faithfully on the exact same questions.
+
+The Einstein row is the cleanest demonstration: it was specifically designed to require `current_date` so the agent couldn't hardcode the year. Neither mode called `current_date`, but react skipped `search` as well — going from one tool short to two tools short.
+
+### The eval-design finding hiding inside this
+
+Look at `reasoning_quality` per row in react mode. Three rows scored a perfect **1.00** — and all three are rows where the model **bypassed search**. Here's a representative judged thought:
+
+> *"I already know the year Sputnik launched (1957) and the year Apollo 11 landed (1969), so I will calculate the difference directly."*
+
+The LLM judge rated this as MORE coherent reasoning than the procedural narration on rows where the agent did follow the protocol (*"I need to look up X, then look up Y, then subtract them"*). And it's right in a narrow sense — bypass reasoning IS more decisive. But:
+
+> **`reasoning_quality` rewards the exact behavior that hurts `tool_call_efficiency`.**
+
+If a team tuned prompts using `reasoning_quality` alone (which sounds like a smart, defensible metric), they would push the agent toward more confident tool-bypass over time. The three orthogonal evaluators in this experiment are what made the divergence visible. With only one of them, the optimization signal would point the wrong way.
+
+### The lesson
+
+> **Asking a model to externalize its reasoning also gives it confidence to commit to that reasoning — including reasoning that bypasses your defined process.**
+
+The textbook ReAct paper (Yao et al., 2022) reported large lifts because 2022-era base models needed the scaffolding to reason at all. By 2026, gpt-4o-mini reasons internally just fine — and externalizing the chain doesn't add new reasoning, it just commits the model to whichever conclusion the chain reaches first. When that conclusion is "I already know this," tool calls get skipped.
+
+For PMs designing AI products in 2026, three concrete takeaways:
+
+1. **Don't import 2022-2023 prompt-engineering wisdom without re-measuring on a current base model.** The deltas have collapsed on many tasks.
+2. **Tool-bypass is a real production failure mode**, and explicit reasoning prompts can make it MORE likely, not less. If you need the model to always call a specific tool, the system prompt is not where you enforce it — the loop/guard is.
+3. **Reasoning-quality metrics can be misaligned with process-quality metrics**, and you cannot tell from a single LLM-judge run. Build orthogonal evaluators or you'll optimize the wrong direction.
 
 ## Quick start
 
@@ -108,4 +153,4 @@ How a ReAct loop looks in LangWatch when each iteration is its own typed span �
 
 ## Status
 
-🚧 Code shipped — baseline run pending. The honest framing will land after the local run: either the textbook lift survives (`react` clearly beats `bare`), or it doesn't (modern base models have closed the gap, in which case explicit scratchpads are pure overhead on this kind of task).
+✅ Complete. Headline is a null on answer correctness (100% in both modes) but react is **10 points worse** on tool efficiency — the model bypasses verification steps on 3/15 rows when its reasoning is externalized, and the `reasoning_quality` judge happens to reward those bypasses as the most coherent reasoning of the whole run. The PM lesson is the inverse of the textbook ReAct claim: in 2026, forcing externalized reasoning doesn't make models more careful — it makes them more committed to whatever conclusion they reach, including conclusions that bypass your defined process. First catalog finding where the *direction-of-effect* is the opposite of the textbook prediction.

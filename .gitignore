@@ -33,3 +33,4 @@ Thumbs.db
 local_data/
 trace_dumps/
 run-log.txt
+*-log.txt

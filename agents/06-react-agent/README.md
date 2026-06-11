@@ -37,6 +37,20 @@ The hypothesis worth testing: does explicit reasoning still earn its keep in 202
 
 Up to 8 iterations. Each iteration is a `langwatch.span(type="agent", name="iteration_N")` under the `react_agent` workflow root, with the LLM call (`type="llm"`) and each tool call (`type="tool"`) as nested children. The trace tree literally mirrors the loop — that's the whole pitch.
 
+### Two real traces, side by side
+
+Both of these are **react-mode runs**. Both questions appear in the dataset. Both should have followed the same `search → search → calculator` path. They didn't.
+
+**The bypass.** *"How old would Albert Einstein be today, in 2026?"* Two iterations, one tool call (`calculator` only). No `search`, no `current_date`. The model emitted a `Thought:` line asserting *"I need to know his birth year, which is 1879"* and went straight to the math:
+
+![](trace-bypass.png)
+
+**The faithful path.** *"How many years passed between the launch of Sputnik and the Apollo 11 moon landing?"* Three iterations, two `search` calls + one `calculator`. Same agent, same mode, same kind of question — but the model chose to verify via tools instead of asserting from training data:
+
+![](trace-faithful.png)
+
+These two traces are the entire finding in one screenshot pair: react mode **sometimes** bypasses tools by externalizing reasoning that asserts training-data knowledge — but the bypass isn't deterministic. OpenAI's temperature=0 has well-known nondeterminism, and the same question can land on either policy across runs. The eval framework caught the bypass tendency *on aggregate* (3/15 react runs vs ~0 bare runs), but rerunning a single bypass case may produce either trace.
+
 See [`agent.py`](agent.py) — ~200 lines, raw OpenAI function calling + LangWatch, no agent framework.
 
 ## The dataset

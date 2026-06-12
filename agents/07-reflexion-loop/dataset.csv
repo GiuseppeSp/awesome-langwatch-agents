@@ -1,0 +1,16 @@
+prompt,constraint_type,primary,secondary,notes
+"Write a single sentence about the moon using exactly 10 words.",word_count,10,,Word count is a classic LLM failure mode
+"Write a single sentence describing an old dog using exactly 8 words.",word_count,8,,
+"Write one sentence about a winter sunrise using exactly 12 words.",word_count,12,,
+"Compose a single sentence about a city skyline at night using exactly 15 words.",word_count,15,,
+"Write a single sentence about a child's first steps using exactly 7 words.",word_count,7,,
+"List exactly 6 mammals whose common names start with the letter S. One per line.",list_length_letter,6,S,Length + letter constraint
+"List exactly 5 fruits whose names start with the letter B. One per line.",list_length_letter,5,B,
+"List exactly 7 European capital cities whose names start with the letter B. One per line.",list_length_letter,7,B,Harder — only ~5 actually exist
+"List exactly 4 chemical elements whose names start with the letter C. One per line.",list_length_letter,4,C,
+"Write a single sentence about cooking dinner that does NOT contain the letter E.",letter_exclusion,E,,Lipograms are very hard for LLMs
+"Write a single sentence about a road trip that does NOT contain the letter S.",letter_exclusion,S,,
+"Write a single sentence about a thunderstorm that does NOT contain the letter A.",letter_exclusion,A,,
+"Write a single sentence about a beach where every word starts with the letter S.",alliteration,S,,Alliteration constraint
+"Write a single sentence about a forest where every word starts with the letter F.",alliteration,F,,
+"Write a single sentence about playing chess where every word starts with the letter P.",alliteration,P,,

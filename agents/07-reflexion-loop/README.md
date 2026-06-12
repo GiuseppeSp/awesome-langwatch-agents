@@ -68,7 +68,75 @@ The driver ([`run_eval.py`](run_eval.py)) runs every row twice and prints the si
 
 ### Results
 
-🚧 _Pending — baseline run not yet executed. Update once the run is complete._
+**Aggregate across 15 rows**
+
+| mode | constraint_satisfaction | retry_lift | self_critique_accuracy |
+|---|---|---|---|
+| `single_pass` | 0.73 (11/15) | n/a | n/a |
+| `reflexion` | **0.80 (12/15)** | 0.47 (slightly below neutral) | **0.40 (wrong 60% of the time)** |
+
+The headline looks like a textbook H1 result — reflexion beats single-pass by 7 percentage points on the outcome metric. **That reading is wrong.** A careful look at the two orthogonal evaluators tells a different story.
+
+### What's actually happening
+
+**+7pp is one extra row at n=15.** Statistically a tie. With binomial noise that wide, you cannot conclude reflexion "works."
+
+**The retry loop never productively fixed an initial failure.** Look at `retry_lift` per-row: 14 rows landed at exactly 0.50 (neutral — first attempt and final attempt had the same pass/fail status). One row landed at 0.00 (hurt — perverse). Zero rows landed at 1.00 (helped). The 7pp aggregate improvement does NOT come from retries fixing wrong outputs. It comes from the first attempts of reflexion-mode runs happening to score one row better than single-pass-mode runs — pure temperature variance at 0.3.
+
+**The self-critique was wrong on 60% of rows.** And the errors aren't random — they cluster by constraint type.
+
+### Three buckets of self-critic behavior
+
+**Bucket A: false-negative miscounting bias** — 8 of 15 rows
+
+The model wrote a correct answer, self-criticized it as wrong, burned both retries trying to "fix" a non-bug, and sometimes ended up at the correct answer anyway by luck.
+
+| Row | constraint | self_critique_accuracy |
+|---|---|---|
+| Moon, 10 words | ✅ | 0.00 (wrong on all 3 attempts) |
+| Old dog, 8 words | ✅ | 0.00 |
+| 7 European capitals starting with B | ✅ | 0.00 |
+| Road trip without letter S | ✅ | 0.00 |
+| Beach, all words start with S | ✅ | 0.00 |
+| City skyline, 15 words | ✅ | 0.33 |
+| Child's first steps, 7 words | ✅ | 0.33 |
+| Chess, all words start with P | ✅ | 0.33 |
+
+The model **can write** correct answers on these constraint types but **cannot verify** them. The self-critic prompt explicitly says *"count the words; off-by-one is still failure."* The model still miscounted, repeatedly, even with the explicit instruction.
+
+**Bucket B: critic is right** — 6 rows
+
+Either the task is genuinely hard at temp=0.3 and the model correctly says FAIL each attempt (12-word winter sunrise, no-A thunderstorm), or the task is easy and the model correctly says PASS on attempt 1 and stops the loop (4 chemical elements starting with C — used only 1 attempt total).
+
+**Bucket C: the perverse case** — 1 row 🚨
+
+| Row | single_pass | reflexion | retry_lift |
+|---|---|---|---|
+| Forest, all words start with F | ✅ | ❌ | **0.00 (HURT)** |
+
+The model wrote an F-alliterative sentence on its first attempt — correct. Self-critique falsely flagged issues that weren't there. The retry produced a non-alliterative sentence. The final output was wrong. **The loop actively broke a correct answer.** This is the H3 perverse outcome in its purest form, and it shipped in production scale this would be the failure that matters most: a correct response replaced with an incorrect one by the verification step that was supposed to make things safer.
+
+### The lesson
+
+> **Reflexion is only as good as the self-critic. If the model can't accurately judge its own output, the retry loop is at best wasted tokens and at worst actively destructive.**
+
+On this dataset, the self-critic had **a systematic false-negative bias on word-count, lipogram, and alliteration tasks** — the exact constraint types where the LLM's well-known weakness at character-level reasoning shows up. The critic shares the producer's blind spots. The retry budget never had a chance to be productive on those rows.
+
+### Where this fits in the catalog's verification arc
+
+This is the third agent in a row to circle the same gravity: post-write verification, in-loop reasoning, and self-critique-with-retry all FAIL in different but related ways. Same meta-lesson, three angles:
+
+| Agent | Verification pattern | How it fails |
+|---|---|---|
+| **#5** multi-agent-pipeline | Post-write fact-checker | Out-of-scope: catches what the writer fabricated, can't see what the planner *forgot* upstream |
+| **#6** react-agent | In-loop externalized reasoning | Commitment: externalized "Thought:" gives the model rhetorical cover to skip verification tools |
+| **#7** reflexion-loop | Self-critique + retry | Calibration: critic shares the producer's miscounting bias; retries amplify wrong verdicts into wasted attempts (or actively-broken outputs) |
+
+**One unified PM lesson for the verification arc:**
+
+> **Adding more verification steps doesn't reliably add safety. A verifier that shares the producer's blind spots cannot catch the producer's errors. A verifier that introduces *new* failure modes can break things the producer got right.**
+
+For AI PMs designing safety-critical agent loops in 2026, the corollary is uncomfortable: **the existence of a verification step is not evidence that verification is happening**. The eval framework has to actively measure whether the verifier is grounded in reality — `self_critique_accuracy` in this experiment, `tool_call_efficiency` in agent #6, the fact-checker firing rate in agent #5. Without those orthogonal metrics, an "Aggregate score went up by 7pp after we added reflexion" PM update on a production agent would be celebrating temperature noise while the loop quietly destroys one row out of fifteen.
 
 ## Quick start
 
@@ -104,4 +172,4 @@ How a self-critique loop looks in LangWatch when each attempt is its own typed s
 
 ## Status
 
-🚧 Code shipped — baseline run pending. The honest framing will land after the local run, depending on which of the three hypotheses the data supports.
+✅ Complete. Headline aggregate looks like H1 (reflexion +7pp on constraint satisfaction) but the orthogonal evaluators reveal it's actually H3 dressed up in temperature noise: `retry_lift` was neutral on 14 rows and HURT on 1 (forest F alliteration row — the canary perverse case), `self_critique_accuracy` was 0.40 (wrong on 60% of rows), and the critic's errors clustered on constraint types where character-level reasoning is the LLM's well-known weakness (word counts, lipograms, alliteration). This completes a three-agent verification arc (#5, #6, #7) where each pattern circles the same gravity: **adding more verification doesn't reliably add safety if the verifier shares blind spots with the producer**.

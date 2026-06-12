@@ -27,6 +27,18 @@ reflexion mode:
 
 Each attempt is a `langwatch.span(type="agent", name="attempt_N")` under the `reflexion_loop` workflow root, with the generator LLM call (`type="llm"`) and the self-critique call (`type="evaluation"`) as nested children. The trace tree shows exactly how many attempts the agent burned — and what its self-verdict was on each.
 
+### Two real traces, side by side
+
+**The false-fail mechanism** — *"Write a single sentence about the moon using exactly 10 words."* The output is *"The moon shines brightly, illuminating the night with its glow."* — count it: **The · moon · shines · brightly · illuminating · the · night · with · its · glow** = exactly 10 words. Constraint satisfied. But the loop ran all 3 attempts, because on every single attempt the `self_critique` span falsely reported *"The answer contains 11 words instead of the required 10."* The model **could write 10-word sentences but could not count them**, even with a critic prompt explicitly telling it to count.
+
+![](trace-miscount.png)
+
+**The perverse case** — *"Write a single sentence about a forest where every word starts with the letter F."* The final output is *"Frogs frolic freely, finding food, flowers, ferns, **and** foliage."* Look at the **and** sitting in there. The single_pass version of this row produced an F-only sentence (constraint satisfied). The reflexion version above ran 3 attempts, falsely flagged a correct first attempt, retried, and replaced the original correct answer with one that contains a non-F word. The loop **actively broke a correct answer**.
+
+![](trace-perverse.png)
+
+Both screenshots show the same shape of trace tree — 3 attempts, each with `generate` + `self_critique` — but the two failures they encode are different. The moon case is wasted retries on a true positive. The forest case is a retry that destroyed a correct answer. Both are what `self_critique_accuracy = 0.40` looks like in the wild.
+
 See [`agent.py`](agent.py) — ~200 lines, raw OpenAI + LangWatch, no agent framework.
 
 ## The dataset

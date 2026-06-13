@@ -19,6 +19,7 @@ Building an AI agent is easy. Knowing whether your agent is actually working —
 | 5 | [multi-agent-pipeline](agents/05-multi-agent-pipeline/) | Planner → writer → optional fact-checker (with revision) | ✅ Shipped — fact-checker fired 0/15 revisions; real failures lived upstream in the planner, invisible to the verifier's scope |
 | 6 | [react-agent](agents/06-react-agent/) | ReAct loop (Thought → Action → Observation) over a multi-hop tool dataset | ✅ Shipped — tie on correctness but react is 10pts WORSE on tool efficiency: externalized reasoning made the model more confident skipping verification tools |
 | 7 | [reflexion-loop](agents/07-reflexion-loop/) | Self-critique + retry on constraint-satisfaction tasks | ✅ Shipped — aggregate looks like reflexion +7pp wins but orthogonal evals reveal it's temperature noise + a perverse case; critic wrong 60% of the time; completes the three-agent verification arc |
+| 8 | [plan-and-execute](agents/08-plan-and-execute/) | Plan the whole task upfront, then execute (static vs replan) | ✅ Shipped — replanning lifts correctness +14pp on brittle branch rows, but the paired metric shows it's H1 and H3 at once: it fixed 4 rows and broke 2, at ~2x the cost — an adaptation trigger is only as good as its calibration |
 
 Each folder contains:
 - `README.md` — pattern walkthrough, what it does, what the tuning experiment showed

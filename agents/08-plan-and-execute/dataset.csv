@@ -1,0 +1,16 @@
+prompt,kind,answer,tolerance,notes
+"What is the combined population of Paris and Berlin, in millions? Give one decimal.",stable,5.8,0.05,Linear plan: two lookups + a sum
+"What is the combined population of Rome and Madrid, in millions? Give one decimal.",stable,6.1,0.05,
+"How much larger is Tokyo's population than Paris's, in millions? Give one decimal.",stable,11.4,0.05,Lookup + lookup + subtract
+"What is the total population of the capitals of France and Germany, in millions? Give one decimal.",stable,5.8,0.05,Multi-hop: country->capital->population, twice
+"What is the total population of the capitals of Spain and Italy, in millions? Give one decimal.",stable,6.1,0.05,Multi-hop linear
+"Divide Spain's population by Madrid's population. Give one decimal.",stable,14.2,0.1,Lookup + lookup + divide
+"What is the combined population of Oslo and Lisbon, in millions? Give one decimal.",stable,1.2,0.05,
+"Look up the population of Berlin. If it is greater than 3 million, give the population of Berlin's country; otherwise give Berlin's own population. Answer in millions, one decimal.",branch,83.0,0.5,Berlin 3.7>3 -> country branch (Germany 83)
+"Look up the population of Paris. If it is greater than 3 million, give the population of Paris's country; otherwise give Paris's own population. Answer in millions, one decimal.",branch,2.1,0.05,Paris 2.1<3 -> city branch
+"Look up the population of Cairo. If it is greater than 5 million, give the population of Cairo's country; otherwise give Cairo's own population. Answer in millions, one decimal.",branch,109.0,0.5,Cairo 9.5>5 -> country branch (Egypt 109)
+"Look up the population of Oslo. If it is greater than 1 million, give the population of Oslo's country; otherwise give Oslo's own population. Answer in millions, one decimal.",branch,0.7,0.05,Oslo 0.7<1 -> city branch
+"Look up the population of Madrid. If it is greater than 3 million, give the population of Madrid's country; otherwise give Madrid's own population. Answer in millions, one decimal.",branch,47.0,0.5,Madrid 3.3>3 -> country branch (Spain 47)
+"Look up the population of Rome. If it is greater than 3 million, give the population of Rome's country; otherwise give Rome's own population. Answer in millions, one decimal.",branch,2.8,0.05,Rome 2.8<3 -> city branch
+"Look up the population of Toronto. If it is greater than 2.5 million, give the population of Toronto's country; otherwise give Toronto's own population. Answer in millions, one decimal.",branch,38.0,0.5,Toronto 2.9>2.5 -> country branch (Canada 38)
+"Look up the population of Lisbon. If it is greater than 1 million, give the population of Lisbon's country; otherwise give Lisbon's own population. Answer in millions, one decimal.",branch,0.5,0.05,Lisbon 0.5<1 -> city branch

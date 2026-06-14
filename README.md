@@ -20,6 +20,7 @@ Building an AI agent is easy. Knowing whether your agent is actually working —
 | 6 | [react-agent](agents/06-react-agent/) | ReAct loop (Thought → Action → Observation) over a multi-hop tool dataset | ✅ Shipped — tie on correctness but react is 10pts WORSE on tool efficiency: externalized reasoning made the model more confident skipping verification tools |
 | 7 | [reflexion-loop](agents/07-reflexion-loop/) | Self-critique + retry on constraint-satisfaction tasks | ✅ Shipped — aggregate looks like reflexion +7pp wins but orthogonal evals reveal it's temperature noise + a perverse case; critic wrong 60% of the time; completes the three-agent verification arc |
 | 8 | [plan-and-execute](agents/08-plan-and-execute/) | Plan the whole task upfront, then execute (static vs replan) | ✅ Shipped — replanning lifts correctness +14pp on brittle branch rows, but the paired metric shows it's H1 and H3 at once: it fixed 4 rows and broke 2, at ~2x the cost — an adaptation trigger is only as good as its calibration |
+| 9 | [chain-of-thought](agents/09-chain-of-thought/) | direct vs CoT vs self-consistency over a mixed-reasoning set | ✅ Shipped — CoT +11pp but all of it in multi-step arithmetic (the CRT "trick" band was already saturated in direct); self-consistency was a pure 5× tax, 0/18 rows changed because the samples were 100% unanimous — extra compute only pays where the model is genuinely uncertain |
 
 Each folder contains:
 - `README.md` — pattern walkthrough, what it does, what the tuning experiment showed

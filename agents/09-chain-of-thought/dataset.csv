@@ -1,0 +1,19 @@
+prompt,band,answer,answer_type,tolerance,notes
+"A notebook costs 4 dollars. How much do 3 notebooks cost?",easy,12,numeric,0,One-step multiply
+"There are 7 days in a week. How many days are in 5 weeks?",easy,35,numeric,0,
+"A box holds 12 eggs. How many eggs are in 8 boxes?",easy,96,numeric,0,
+"Sarah is 10 years old. Her brother is 3 years older. How old is her brother?",easy,13,numeric,0,
+"A car travels 60 km in 1 hour. How far does it travel in 3 hours at the same speed?",easy,180,numeric,0,
+"Janet buys 3 shirts at 15 dollars each and 2 hats at 8 dollars each. How much does she spend in total, in dollars?",multistep,61,numeric,0,Two products then a sum
+"A baker made 60 cookies. He sold 25 in the morning and 18 in the afternoon. How many are left?",multistep,17,numeric,0,
+"Tom has 48 marbles. He gives a third of them to his sister and 5 to his friend. How many does he have left?",multistep,27,numeric,0,Fraction then subtract
+"A tank holds 200 liters. 35 liters are used each day. How many liters remain after 4 days?",multistep,60,numeric,0,
+"A class has 30 students. 40 percent are boys. How many girls are there?",multistep,18,numeric,0,Percent complement
+"A train leaves at 9:15 and arrives at 11:45. How many minutes is the journey?",multistep,150,numeric,0,Time arithmetic
+"You buy 3 items at 2.50 dollars each and pay with a 20 dollar bill. How much change do you get, in dollars?",multistep,12.5,numeric,0.01,
+"Tom is taller than Sue. Sue is taller than Ann. Who is the shortest? Answer with the name.",logic,Ann,text,0,Transitive ordering
+"If all Bloops are Razzies and all Razzies are Lazzies, are all Bloops definitely Lazzies? Answer yes or no.",logic,yes,text,0,Syllogism
+"Anna sits to the left of Ben. Ben sits to the left of Carl. Who sits in the middle? Answer with the name.",logic,Ben,text,0,Ordering
+"A bat and a ball cost 1.10 dollars in total. The bat costs 1.00 dollar more than the ball. How much does the ball cost, in dollars?",trick,0.05,numeric,0.001,CRT — intuitive wrong answer is 0.10
+"If it takes 5 machines 5 minutes to make 5 widgets, how many minutes would it take 100 machines to make 100 widgets?",trick,5,numeric,0,CRT — intuitive wrong answer is 100
+"In a lake there is a patch of lily pads. Every day the patch doubles in size. It takes 48 days to cover the entire lake. How many days does it take to cover half the lake?",trick,47,numeric,0,CRT — intuitive wrong answer is 24

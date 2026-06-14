@@ -28,6 +28,16 @@ Each node is a typed LangWatch span under the `chain_of_thought` workflow root: 
 
 Both prompts force a trailing `Final answer: X` line, so a single extractor parses every mode identically; the only difference between modes is whether reasoning is allowed before that line. See [`agent.py`](agent.py) — ~220 lines, raw OpenAI + LangWatch, no agent framework.
 
+### Two real traces
+
+**Self-consistency: paying 5× to agree with itself.** The bat-and-ball question in `self_consistency` mode — five `sample_*` LLM spans fan out under the root, then a single `majority_vote` span aggregates them. Every sample returned `0.05`; the vote was unanimous. This is the whole null result in one picture: five calls, one answer, nothing for the vote to actually decide (`answer=0.05 | calls=5`).
+
+![](trace-self-consistency.png)
+
+**CoT's one real home: multi-step arithmetic.** The tank problem (200 − 35×4) in `cot` mode — a single `answer` span where "think step by step" walks the subtraction-after-multiplication that `direct` dropped, landing on `60`. This is one of the only two rows in the whole set where reasoning flipped a wrong direct answer to right.
+
+![](trace-cot-multistep.png)
+
 ## The dataset
 
 18 questions ([`dataset.csv`](dataset.csv)) across four bands, each with one exact answer so all scoring is mechanical:

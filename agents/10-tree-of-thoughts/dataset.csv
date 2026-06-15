@@ -1,0 +1,13 @@
+numbers,difficulty,notes
+1 2 3 4,easy,1*2*3*4=24 — hundreds of solution paths
+2 4 6 8,easy,Many paths e.g. (2+4)*(8-... ) — integer-friendly
+6 6 6 6,easy,6+6+6+6=24
+2 3 4 6,easy,4*6*(3-2)=24 — many paths
+2 3 4 5,medium,2*(3+4+5)=24
+4 5 6 7,medium,4*(6+7-5)? — moderate path count
+3 4 5 6,medium,fewer paths
+5 5 5 5,medium,5*5-5/5=24 — needs a clean fraction
+4 9 10 13,hard,(13-9)*(10-4)=24 — the classic ToT-paper hard case
+1 5 5 5,hard,5*(5-1/5)=24 — needs a fraction
+1 3 4 6,hard,6/(1-3/4)=24 — only ~8 paths, needs a fraction
+3 3 8 8,hard,8/(3-8/3)=24 — non-terminating fraction; hardest

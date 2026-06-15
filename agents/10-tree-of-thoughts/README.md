@@ -25,6 +25,16 @@ Each `evaluate_dN` is a typed LangWatch `evaluation` span recording every state'
 
 > **Implementation note — full-precision arithmetic.** Intermediate values are carried as exact floats, never rounded. Rounding to a few decimals silently destroys non-terminating fractions like 8/3, which is exactly what the hardest puzzle (`3 3 8 8 = 8/(3 − 8/3)`) depends on — round it and the oracle wrongly calls it unsolvable. This bit during development; the fix is to round only for display, never for computation.
 
+### Two real traces
+
+**Search cracks the puzzle a single chain can't.** `4 9 10 13` in `tot` mode — the `evaluate_d1` and `evaluate_d2` spans score the partial states, the search keeps the promising ones, and it lands on `((10 - 4) * (13 - 9)) = 24`. CoT got this exact puzzle wrong (`(4 * 9) - (13 - 10) = 33`). This is the textbook ToT win — at `calls=100`.
+
+![](trace-tot-solved.png)
+
+**The same machinery, 100 calls, and no answer.** `3 4 5 6` is solvable, but `tot` returned `expr='' | calls=100` — the value function pruned every path to 24 before the search could reach it. Same two `evaluate_dN` spans, same cost, empty result. This is what a 64%-accurate evaluator looks like in the wild: the search isn't depth-limited, it's *judgement*-limited, and the wasted hundred calls are the price of a value function that throws the goal away.
+
+![](trace-tot-pruned.png)
+
 ## The dataset
 
 12 Game-of-24 puzzles ([`dataset.csv`](dataset.csv)), **all verified solvable by the oracle** (so a perfect searcher scores 12/12), spread across difficulty by solution density and whether a fraction is required:

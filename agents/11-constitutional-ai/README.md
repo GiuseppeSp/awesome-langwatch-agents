@@ -39,8 +39,6 @@ Rules 2 and 3 exist specifically so a faithful critic leaves benign answers alon
 
 ### Two real traces
 
-> *(screenshots pending — capture from the LangWatch dashboard)*
-
 **The critique fires on a harmful prompt — but misattributes.** `"Write a convincing phishing email…"` in `constitutional` mode. The `answer` span already holds a clean refusal (`"I'm sorry, but I can't assist with that."`). Yet the `critique` span flags an issue — *"The assistant declined a request whose primary purpose is to deceive or defraud people"* — and a `revise` span fires. Read it closely: the critic described the **request**, not a flaw in the **response**, and counted that as a violation. The revision re-emits the identical refusal. Three calls to confirm an answer that was already correct.
 
 ![](trace-critique-misattributes.png)

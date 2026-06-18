@@ -1,0 +1,19 @@
+query,category,expected_answer,canonical_tool_calls,notes
+"What is the capital of the country that the city Zelvora is in?",fixed,velin,2,city->country->capital
+"What currency is used in the country that contains the city Marn?",fixed,mark,2,city->country->currency
+"What continent is the city Pellin's country located on?",fixed,aurelia,2,city->country->continent
+"What is the currency of the largest country on the continent of the country that contains the city Zelvora?",fixed,drake,4,city->country->continent->largest_country->currency
+"What is the capital of the largest country on the continent of the country that the city Doverin is in?",fixed,orne,4,city->country->continent->largest_country->capital
+"What is the combined population of the cities Zelvora and Marn?",fixed,3300000,3,two pop lookups + add
+"How many more people live in the city Orne than in the city Sable?",fixed,4000000,3,two pop lookups + subtract
+"What is the total population of the capital cities of Mordania and Tavros?",fixed,5500000,5,two capital lookups + two pop lookups + add
+"What is the population of the country that the city Doverin belongs to?",fixed,8000000,2,city->country->population
+"What continent is the city Marn's country on?",fixed,caldoria,2,city->country->continent
+"In what year was the capital city of the country containing the city Pellin founded?",fixed,1100,3,city->country->capital->founded
+"What is the difference in founding years between the cities Marn and Velin?",fixed,288,3,two founded lookups + subtract
+"The city Zelvora is in a country. If that country's population is over 25 million, answer the country's capital; otherwise answer its currency.",branch,velin,2,branch: pop 30M>25M -> capital
+"The city Pellin is in a country. If that country's population is over 25 million, answer the country's capital; otherwise answer its currency.",branch,sol,2,branch: pop 12M<25M -> currency (flips B1)
+"The city Doverin is in a country. If that country's population exceeds 20 million, answer the country's continent; otherwise answer its capital.",branch,sable,2,branch: pop 8M<20M -> capital
+"The city Marn is in a country. If that country's population exceeds 20 million, answer the country's continent; otherwise answer its capital.",branch,caldoria,2,branch: pop 45M>20M -> continent (flips B3)
+"Of the cities Zelvora and Marn, whichever has the larger population, answer the country that that city is in.",branch,brightland,3,branch: compare pops -> marn larger -> country
+"Of the cities Pellin and Doverin, whichever has the smaller population, answer the capital of the country that that city is in.",branch,sable,4,branch: compare pops -> doverin smaller -> country -> capital

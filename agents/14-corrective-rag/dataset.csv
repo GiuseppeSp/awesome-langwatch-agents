@@ -1,0 +1,16 @@
+query,category,gold_answer,answer_in_local,notes
+"Who founded the mining colony of Thessaly?",in_corpus,Korrin Consortium,yes,local p1
+"What is the primary export of the colony of Brae?",in_corpus,silica,yes,local p2
+"In what year was Dunmore established?",in_corpus,2104,yes,local p4
+"Who governs the outpost of Lenk?",in_corpus,Aldo Vance,yes,local p6
+"When was the Korrin Consortium chartered?",in_corpus,2150,yes,local p5
+"What is the main export of Lenk?",in_corpus,ammonia,yes,local p6
+"What is the primary export of the trade hub Cael?",out_obvious,deuterium,no,web only (Cael absent from local)
+"When was the Vernal Compact signed?",out_obvious,2188,no,web only
+"Who founded the Sirin Reach trade routes?",out_obvious,Marin Kuso,no,web only
+"What does the colony of Tovik study?",out_obvious,dark-matter,no,web only
+"What happened to the colony of Pell's Rest in 2199?",out_obvious,abandoned,no,web only
+"Who is the governor of Ostrov Station?",out_tricky,Hadle Sun,no,"local has an Ostrov passage (residents/research) but no governor; a governor distractor (Brae) also retrieves"
+"How deep is the Korrin Shaft on Vex?",out_tricky,3.2,no,"local has Vex + Korrin passages but no shaft depth"
+"Who is the lead scientist at the colony of Tovik?",out_tricky,Eda Pol,no,"'research' overlaps Ostrov passage; Tovik absent from local"
+"In what year was the trade hub Cael founded?",out_tricky,2176,no,"local has other founding years (2189/2104/2201/2150) as year-bearing distractors"

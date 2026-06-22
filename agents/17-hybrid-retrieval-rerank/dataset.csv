@@ -1,0 +1,15 @@
+query,category,gold_answer,notes
+"What is Sunmoss used to treat?",clean,inflammation,names the entity + corpus vocab
+"Where are Tidecap mushrooms found?",clean,coastal,names the entity
+"What does Gravewort root reduce?",clean,fever,names the entity
+"What draught is brewed from Azure Fern spores?",clean,sleeping,names the entity
+"What does distilled Whispervine sap sharpen?",clean,memory,names the entity
+"What do Goldcrest berries heal?",clean,burns,names the entity
+"What does chewing Emberleaf dull?",clean,toothache,names the entity
+"What's the glowing moss people use for achy joints called?",poor,Sunmoss,vague layperson phrasing; no formal name
+"What plant helps you remember things better?",poor,Whispervine,vague; 'remember' vs 'memory/focus'
+"What can I give a child for a sore tooth?",poor,Emberleaf,'sore tooth' vs 'toothache'; no entity name
+"What do sailors take so they don't get sick on boats?",poor,Tidecap,'sick on boats' vs 'seasickness'
+"What's the winter flower for a scratchy throat?",poor,Frostbloom,'scratchy throat' vs 'sore throat'
+"What berries are used to treat burned skin?",poor,Goldcrest,'burned skin' vs 'burns'
+"What root brings down a high temperature?",poor,Gravewort,'high temperature' vs 'fever'

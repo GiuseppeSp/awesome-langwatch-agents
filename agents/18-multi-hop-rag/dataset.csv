@@ -1,0 +1,14 @@
+query,category,hops,gold_answer,notes
+"What does the scholar Aldric specialize in?",single,1,astronomy,one passage
+"What does the scholar Corwin specialize in?",single,1,herbalism,one passage
+"Which institution does the scholar Beya belong to?",single,1,Sere,one passage
+"In which place does the Vellum Academy stand?",single,1,Threnn,one passage
+"What does the scholar Esha specialize in?",single,1,navigation,one passage
+"In which place does the scholar Aldric work?",multi,2,Threnn,Aldric->Vellum->Threnn
+"In which place does the scholar Beya work?",multi,2,Oloss,Beya->Sere->Oloss
+"In which place does the scholar Corwin work?",multi,2,Bred,Corwin->Tarn->Bred
+"Which body governs the place where the Vellum Academy stands?",multi,2,Pell Concord,Vellum->Threnn->Pell Concord
+"In which place does the scholar Doran work?",multi,2,Threnn,Doran->Vellum->Threnn
+"Which body governs the place where the scholar Aldric works?",multi,3,Pell Concord,Aldric->Vellum->Threnn->Pell Concord
+"Which body governs the place where the scholar Corwin works?",multi,3,Pell Concord,Corwin->Tarn->Bred->Pell Concord
+"Which body governs the place where the scholar Beya works?",multi,3,Maelor League,Beya->Sere->Oloss->Maelor League

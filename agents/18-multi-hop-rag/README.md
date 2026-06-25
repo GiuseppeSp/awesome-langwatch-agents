@@ -25,11 +25,11 @@ Each step is a typed LangWatch span; each hop is an `agent` span wrapping its `d
 
 ### Two real traces
 
-**Single-shot can't bridge — it returns the link, not the answer.** `single` on *"In which place does the scholar Aldric work?"* — retrieval gets the two Aldric passages ("belongs to the Vellum Academy", "specializes in astronomy") but **not** "The Vellum Academy stands in Threnn" (zero shared keywords with the question). The generator answers **"Vellum Academy"** — the bridge entity, not the city. It literally cannot retrieve the answer.
+**Single-shot can't bridge — it returns the link, not the answer.** `single` on *"In which place does the scholar Doran work?"* — retrieval gets the two Doran passages ("belongs to the Vellum Academy", "specializes in metallurgy") but **not** "The Vellum Academy stands in Threnn" (zero shared keywords with the question). The generator answers **"Vellum Academy"** — the bridge entity, not the city. It literally cannot retrieve the answer.
 
 ![](trace-single-cant-bridge.png)
 
-**The loop chains the hops.** `multihop` on the same question — `hop_1`'s `decide` span asks *"Where does Aldric work?"* → retrieves Aldric → Vellum; `hop_2` asks *"Where is the Vellum Academy located?"* → retrieves Vellum → Threnn; then `ANSWER: Threnn`. The bridge entity discovered in hop 1 becomes the retrieval key for hop 2.
+**The loop chains the hops.** `multihop` on the same question — `hop_1`'s `decide` span asks *"Where does Doran work?"* → retrieves Doran → Vellum; `hop_2` asks *"Where is the Vellum Academy located?"* → retrieves Vellum → Threnn; then `ANSWER: Threnn`. The bridge entity discovered in hop 1 becomes the retrieval key for hop 2.
 
 ![](trace-multihop-chains.png)
 

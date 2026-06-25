@@ -1,0 +1,12 @@
+query,category,gold_answer,support,notes
+"What does the scholar Aldric specialize in?",local,astronomy,astronomy,one edge
+"In which city is the Tarn Institute located?",local,Bred,Bred,one edge
+"Which body governs Oloss?",local,Maelor League,Maelor League,one edge
+"What does the scholar Gale specialize in?",local,rhetoric,rhetoric,one edge
+"In which city does the scholar Aldric work?",multihop,Threnn,Vellum Academy|Threnn,2-hop chain
+"In which city does the scholar Beya work?",multihop,Oloss,Sere Conservatory|Oloss,2-hop chain
+"Which body governs the city where the scholar Hana works?",multihop,Pell Concord,Tarn Institute|Bred|Pell Concord,3-hop chain
+"How many scholars belong to the Vellum Academy?",global,4,Aldric|Doran|Faye|Iven,count across 4 edges (> top-k)
+"Which academy has the most scholars?",global,Vellum,Aldric|Doran|Faye|Iven|Beya|Esha|Gale|Corwin|Hana,needs all 9 belongs edges
+"How many scholars study at the academy located in Threnn?",global,4,Aldric|Doran|Faye|Iven,city->academy->count scholars
+"How many scholars work in cities governed by the Pell Concord?",global,6,Aldric|Doran|Faye|Iven|Corwin|Hana,body->cities->academies->count

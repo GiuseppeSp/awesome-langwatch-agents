@@ -1,0 +1,11 @@
+bio,category,gold_name,gold_role,gold_city,gold_years
+"Mara Voss is a data engineer based in Helmsford. She has 7 years of experience.",clean,Mara Voss,data engineer,Helmsford,7
+"Tomas Rein works as a product designer in Calden. He has spent 4 years in the field.",clean,Tomas Rein,product designer,Calden,4
+"Priya Anand is a security analyst located in Doverton with 11 years of experience.",clean,Priya Anand,security analyst,Doverton,11
+"Goran Bek, a senior researcher, lives in New Halford. Over a 15-year career he has led many teams.",tricky,Goran Bek,senior researcher,New Halford,15
+"Lena Cho is a machine learning lead in Port Aurel. She joined 9 years ago, after 3 years at a startup and 2 internships.",tricky,Lena Cho,machine learning lead,Port Aurel,9
+"Aric Nolan, based in Sundale, is a DevOps specialist. He brings 6 years of hands-on experience and holds 2 certifications.",tricky,Aric Nolan,DevOps specialist,Sundale,6
+"Wen Li is a UX writer in Brightwater.",incomplete,Wen Li,UX writer,Brightwater,ABSENT
+"Dmitri Sahl has 8 years of experience as a backend developer.",incomplete,Dmitri Sahl,backend developer,ABSENT,8
+"Sofia Marin, a project manager with 5 years of experience.",incomplete,Sofia Marin,project manager,ABSENT,5
+"The analyst has worked in Veor for 12 years.",incomplete,ABSENT,analyst,Veor,12

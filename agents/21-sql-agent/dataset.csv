@@ -1,0 +1,9 @@
+question,tier,gold_sql
+"What rank does the adventurer known as Ironwood hold?",easy,"SELECT rank FROM members WHERE handle='Ironwood'"
+"How many quests take place in the Frostpeak area?",easy,"SELECT COUNT(*) FROM quests WHERE region='Frostpeak'"
+"What are the names of all the hard quests?",easy,"SELECT title FROM quests WHERE difficulty='hard'"
+"Which quests has the adventurer Ironwood completed?",join,"SELECT q.title FROM quests q JOIN completions c ON q.id=c.quest_id JOIN members m ON m.id=c.member_id WHERE m.handle='Ironwood'"
+"Where does the adventurer who finished the quest called 'Hollow Root' live?",join,"SELECT DISTINCT m.home_city FROM members m JOIN completions c ON m.id=c.member_id JOIN quests q ON q.id=c.quest_id WHERE q.title='Hollow Root'"
+"What is the total reward earned by Ironwood across all the quests they have finished?",aggregate,"SELECT SUM(q.reward_gp) FROM quests q JOIN completions c ON q.id=c.quest_id JOIN members m ON m.id=c.member_id WHERE m.handle='Ironwood'"
+"Which area has the most quests?",aggregate,"SELECT region FROM quests GROUP BY region ORDER BY COUNT(*) DESC LIMIT 1"
+"How many adventurers signed up in the year 1203?",aggregate,"SELECT COUNT(*) FROM members WHERE joined_year=1203"

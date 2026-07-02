@@ -1,0 +1,13 @@
+question,category,gold
+What is 78463 multiplied by 92147?,compute,7230130061
+What is 3 raised to the power of 25?,compute,847288609443
+What is 1234567 modulo 89?,compute,48
+"How many times does the letter 'e' appear in this sentence: 'The quiet keeper never expected these eleven excellent trees'?",compute,20
+How many times does the letter 'r' appear in the phrase 'strawberry raspberry mirror'?,compute,9
+How many days are there between 1998-07-16 and 2024-02-29?,compute,9359
+"If you invest $1000 at 5% annual compound interest for 7 years, what is the final amount rounded to the nearest cent?",compute,1407.1
+"What is the population standard deviation of [4, 8, 15, 16, 23, 42], rounded to 4 decimal places?",compute,12.3153
+"What is the median of the list [45, 12, 78, 33, 9, 60, 27]?",compute,33
+What is 12 plus 15?,trivial,27
+What is 100 divided by 4?,trivial,25
+What is 7 multiplied by 8?,trivial,56

@@ -1,0 +1,10 @@
+task,category,solvable
+"Fetch the current reading from the 'clock' resource.",clean,yes
+"Fetch the current reading from the 'status' resource.",clean,yes
+"Fetch the current reading from the 'weather' resource.",recoverable,yes
+"Fetch the current reading from the 'inventory' resource.",recoverable,yes
+"Fetch the current reading from the 'ledger' resource.",recoverable,yes
+"Fetch the current reading from the 'registry' resource.",recoverable,yes
+"Fetch the current reading from the 'ghost' resource.",unrecoverable,no
+"Fetch the current reading from the 'sealed' resource.",unrecoverable,no
+"Fetch the current reading from the 'void' resource.",unrecoverable,no

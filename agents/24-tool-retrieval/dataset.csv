@@ -1,0 +1,21 @@
+query,correct_tool,cluster
+"How much is 250 US dollars in euros?",convert_currency,convert
+"What's 10 kilometers in miles?",convert_units,convert
+"What time is 3pm New York time in London?",convert_timezone,convert
+"Translate 'good morning' into Japanese.",translate_text,language
+"What language is 'bonjour tout le monde' written in?",detect_language,language
+"Give me a short summary of this article.",summarize_text,text
+"Is this product review positive or negative?",sentiment_analysis,text
+"What's the current share price of Acme Corp?",stock_price,finance
+"What's the price of Bitcoin right now?",crypto_price,finance
+"What's the weather like in Oslo right now?",weather_current,weather
+"Will it rain in Oslo over the next 5 days?",weather_forecast,weather
+"What are the coordinates of 10 Downing Street?",geocode_address,geo
+"What's the status of flight BA249?",flight_status,travel
+"Find me a hotel in Lisbon for next weekend.",hotel_search,travel
+"Add a dentist appointment to my calendar for Friday.",calendar_create_event,comms
+"Send a text to +15551234 saying I'm running late.",send_sms,comms
+"Split an 84 dollar bill with a 20% tip.",tip_calculator,math
+"What's the air quality in Delhi today?",air_quality,weather
+"What's the driving distance from Rome to Naples?",distance_between,geo
+"Remind me to call the bank tomorrow at 9am.",set_reminder,comms

@@ -1,0 +1,21 @@
+question,gold,category
+"A price rises by 20% and then falls by 20%. If the final price is $96, what was the original price in dollars?",100,trap
+"In a class of 30 students, 18 play soccer, 15 play basketball, and 5 play neither. How many students play both sports?",8,hard
+"The average of five numbers is 20. When one number is removed, the average of the remaining four is 22. What was the removed number?",12,hard
+"How many distinct arrangements are there of the letters in the word BANANA?",60,hard
+"How many positive divisors does the number 60 have?",12,hard
+"A 3x3x3 cube is painted on all six outer faces and then cut into 27 unit cubes. How many of the unit cubes have exactly one painted face?",6,hard
+"A 3x3x3 cube is painted on all six outer faces and cut into 27 unit cubes. How many unit cubes have exactly two painted faces?",12,hard
+"If a hen and a half lay an egg and a half in a day and a half, how many eggs do 6 hens lay in 6 days?",24,trap
+"A car drives 30 mph for the first half of a 60-mile trip and 60 mph for the second half. What is its average speed in mph for the whole trip?",40,trap
+"A game show has 4 doors; one hides a car. You pick a door. The host opens two other doors, both empty, and lets you switch to the last unopened door. If you switch, what is your chance of winning, as a percentage?",75,trap
+"How many times does the digit 1 appear when you write out all the whole numbers from 1 to 100?",21,hard
+"How many squares of any size are there on a standard 8x8 chessboard?",204,trap
+"What is the smaller angle, in degrees, between the hour and minute hands of a clock at 3:15?",7.5,hard
+"A clock loses 10 minutes every hour. It is set correctly at noon. When the true time is 6:00 PM, how many minutes behind is the clock?",60,hard
+"What is the units digit of 7 raised to the power 7?",3,hard
+"In a family, each daughter has as many brothers as sisters, and each son has twice as many sisters as brothers. How many sons are in the family?",3,hard
+"A fair coin is flipped 3 times. What is the probability of getting at least one head, as a percentage?",87.5,hard
+"What is the sum of the interior angles of a heptagon (a 7-sided polygon), in degrees?",900,hard
+"If 5 machines make 5 widgets in 5 minutes, how many machines are needed to make 100 widgets in 100 minutes?",5,trap
+"A snail climbs 3 feet up a 10-foot wall each day and slips back 2 feet each night. On which day does it reach the top?",8,trap

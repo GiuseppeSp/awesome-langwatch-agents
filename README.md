@@ -4,6 +4,8 @@ A curated, runnable catalog of **AI agents you can actually trust** — because 
 
 Most "awesome AI agents" lists show you code. This one shows you **what good looks like, measured**: the trace tree, the per-step token + cost breakdown, the evaluator scores before and after every tuning decision.
 
+> **📄 Start here — [The Precondition Thread](docs/the-precondition-thread.md):** what all 29 agents add up to. Every agentic pattern is sold as a general upgrade; almost none are. Each helps only when a specific, *measurable* precondition holds — and for a capable model it often doesn't, so the mechanism is pure cost. The essay walks the thread tier by tier and draws out the transferable skill: measure the precondition before you adopt the pattern.
+
 ## Why this exists
 
 Building an AI agent is easy. Knowing whether your agent is actually working — and proving it stays working after every prompt change — is hard. That gap is what kills production AI features. This repo is a working answer: a series of small, focused agents, each one measured end-to-end, each one paired with the kind of tuning experiment that turns "vibes" into "I shipped a 23% improvement."
